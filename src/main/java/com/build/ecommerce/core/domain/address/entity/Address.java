@@ -1,5 +1,6 @@
 package com.build.ecommerce.core.domain.address.entity;
 
+import com.build.ecommerce.core.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import org.hibernate.annotations.Comment;
 public class Address {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ADDRESSS_ID")
+    @Column(name = "ADDRESS_ID")
     private Long id;
 
     @Comment(value = "delivery address")
@@ -29,4 +30,8 @@ public class Address {
     @Comment(value = "delivery address zipCode")
     @Column(nullable = false)
     private String zipCode;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 }
