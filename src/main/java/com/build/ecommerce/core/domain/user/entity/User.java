@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String birthday;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "ADDRESSS_ID")
+    @Comment("user delivery address")
+    @OneToOne(mappedBy = "user")
     private Address address;
 }
