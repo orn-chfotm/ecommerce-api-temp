@@ -1,18 +1,14 @@
-package com.build.ecommerce.core.domain.address.entity;
+package com.build.ecommerce.domain.address.entity;
 
-import com.build.ecommerce.core.domain.user.entity.User;
+import com.build.ecommerce.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
-@NoArgsConstructor
-@Getter
-@AllArgsConstructor
-@Builder
 @Entity
+@Comment(value = "Delivery Address Table, Join Users Table")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Address {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +27,15 @@ public class Address {
     @Column(nullable = false)
     private String zipCode;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    @Builder
+    public Address(String address, String extraAddress, String zipCode, User user) {
+        this.address = address;
+        this.extraAddress = extraAddress;
+        this.zipCode = zipCode;
+        this.user = user;
+    }
 }

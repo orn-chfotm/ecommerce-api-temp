@@ -1,18 +1,21 @@
-package com.build.ecommerce.core.domain.user.entity;
+package com.build.ecommerce.domain.user.entity;
 
-import com.build.ecommerce.core.domain.address.entity.Address;
-import com.build.ecommerce.util.BaseEntity;
+import com.build.ecommerce.core.util.BaseEntity;
+import com.build.ecommerce.domain.address.entity.Address;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-@NoArgsConstructor
-@Getter
-@AllArgsConstructor
-@Builder
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "USERS")
-@Comment("User Information Table")
+@Comment(value = "User Information Table")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +40,20 @@ public class User extends BaseEntity {
 
     @Comment("user birthday, must be not null")
     @Column(nullable = false)
-    private String birthday;
+    private LocalDate birthDate;
 
     @Comment("user delivery address")
     @OneToOne(mappedBy = "user")
     private Address address;
+
+    @Builder
+    public User(String email, String password, String name, Gender gender, LocalDate birthDate) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.birthDate = birthDate;
+    }
+
+
 }
