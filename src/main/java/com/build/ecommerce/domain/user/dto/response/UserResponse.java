@@ -67,7 +67,7 @@ public record UserResponse(
         return new UserResponseBuilder();
     }
 
-    public static UserResponse from(final User user) {
+    public static UserResponse toDto(final User user) {
         return UserResponse.builder()
                 .email(user.getEmail())
                 .password(user.getPassword())
