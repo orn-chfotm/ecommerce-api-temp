@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1")
-@RequiredArgsConstructor
 @Tag(name = "배송지", description = "배송지 관련 Api")
 public class AddressController {
 
