@@ -4,7 +4,7 @@ import com.build.ecommerce.core.util.LocalDateUtil;
 import com.build.ecommerce.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public record UserRequest(
         @NotBlank(message = "이메일을 입력해야 합니다.")
@@ -24,7 +24,7 @@ public record UserRequest(
         String birthDate
 ) {
 
-    public static User to(UserRequest userRequest) {
+    public static User toEntity(UserRequest userRequest, PasswordEncoder passwordEncoder) {
         return User.builder()
                 .email(userRequest.email)
                 .password(userRequest.password)

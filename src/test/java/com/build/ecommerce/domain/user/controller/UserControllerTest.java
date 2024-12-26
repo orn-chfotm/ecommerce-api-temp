@@ -8,7 +8,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles(value = "test")
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
@@ -29,7 +32,7 @@ class UserControllerTest {
     @Test
     void createUser() throws Exception {
 
-        UserRequest userRequest = new UserRequest("test@email", "", "kim", "남성", "2024-12-26");
+        UserRequest userRequest = new UserRequest("test@email", "123", "kim", "남성", "2024-12-26");
         mockMvc.perform(post("/v1/signUp")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .content(objectMapper.writeValueAsString(userRequest))

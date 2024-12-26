@@ -20,12 +20,7 @@ public class UserService {
     }
 
     public void register(UserRequest userRequest) {
-        userRepository.save(User.builder()
-                .email(userRequest.email())
-                .password(passwordEncoder.encode(userRequest.password()))
-                .name(userRequest.name())
-                .gender(Gender.valueOf(userRequest.gender()))
-                .birthDate(LocalDateUtil.toLocalDate(userRequest.birthDate()))
-            .build());
+        User userEntity = UserRequest.toEntity(userRequest, passwordEncoder);
+        userRepository.save(userEntity);
     }
 }

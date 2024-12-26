@@ -46,7 +46,7 @@ public record AddressResponse(
         return new AddressResponseBuilder();
     }
 
-    public static AddressResponse from(Address address) {
+    public static AddressResponse toDto(Address address) {
         return AddressResponse.builder()
                 .address(address.getAddress())
                 .extraAddress(address.getExtraAddress())
