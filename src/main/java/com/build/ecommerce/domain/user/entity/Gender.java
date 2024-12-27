@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public enum Gender {
-    MAN("남성"), WOMAN("여성");
+    MAN("M"), WOMAN("F");
 
     private final String value;
 
@@ -18,6 +18,6 @@ public enum Gender {
         return Arrays.stream(Gender.values())
                 .filter(val -> val.getValue().equals(value))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException("Gender value is not found"));
     }
 }
