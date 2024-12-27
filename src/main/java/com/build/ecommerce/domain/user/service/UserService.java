@@ -1,8 +1,6 @@
 package com.build.ecommerce.domain.user.service;
 
-import com.build.ecommerce.core.util.LocalDateUtil;
 import com.build.ecommerce.domain.user.dto.request.UserRequest;
-import com.build.ecommerce.domain.user.entity.Gender;
 import com.build.ecommerce.domain.user.entity.User;
 import com.build.ecommerce.domain.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

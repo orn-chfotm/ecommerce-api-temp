@@ -4,10 +4,6 @@ package com.build.ecommerce.domain.user.dto.response;
 import com.build.ecommerce.core.util.LocalDateUtil;
 import com.build.ecommerce.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.type.descriptor.DateTimeUtils;
 
 public record UserResponse(
         @Schema(description = "이메일(ID)")
@@ -74,6 +70,6 @@ public record UserResponse(
                 .name(user.getName())
                 .gender(user.getGender().getValue())
                 .birthDate(LocalDateUtil.toString(user.getBirthDate()))
-                .build();
+            .build();
     }
 }

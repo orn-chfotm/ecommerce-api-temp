@@ -24,12 +24,12 @@ public record UserRequest(
         String birthDate
 ) {
 
-    public static User toEntity(UserRequest userRequest, PasswordEncoder passwordEncoder) {
+    public static User toEntity(final UserRequest userRequest, final PasswordEncoder passwordEncoder) {
         return User.builder()
                 .email(userRequest.email)
                 .password(userRequest.password)
                 .name(userRequest.name)
                 .birthDate(LocalDateUtil.toLocalDate(userRequest.birthDate))
-                .build();
+            .build();
     }
 }

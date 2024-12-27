@@ -6,7 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.Comment;
 
 @Entity
-@Comment(value = "Delivery Address Table, Join Users Table")
+@Comment(value = "Delivery Address Table, Join Users Table", on = "TABLE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Address {
@@ -27,7 +27,7 @@ public class Address {
     @Column(nullable = false)
     private String zipCode;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
