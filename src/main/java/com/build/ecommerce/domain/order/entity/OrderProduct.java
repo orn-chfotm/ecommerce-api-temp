@@ -4,13 +4,14 @@ import com.build.ecommerce.domain.product.entity.Product;
 import com.build.ecommerce.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @Table(name = "ORDER_PRODUCT")
-@Comment(value = "Order Product relation talble")
+@Comment(value = "Order Product relation table")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class OrderProduct {
@@ -33,4 +34,12 @@ public class OrderProduct {
 
     @Comment(value = "order product quantity")
     private int quantity;
+
+    @Builder
+    public OrderProduct(Order order, Product product, int totalPrice, int quantity) {
+        this.order = order;
+        this.product = product;
+        this.totalPrice = totalPrice;
+        this.quantity = quantity;
+    }
 }

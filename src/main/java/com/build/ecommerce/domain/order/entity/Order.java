@@ -4,6 +4,7 @@ import com.build.ecommerce.domain.product.entity.Product;
 import com.build.ecommerce.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -26,12 +27,19 @@ public class Order {
 
     @Comment(value = "order number, not pk")
     @Column(name = "ORDER_NUMBER", nullable = false, unique = true)
+    @GeneratedValue
     private Long orderNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "order", orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
+
+    @Builder
+    public Order(User user, List<OrderProduct> orderProducts) {
+        this.user = user;
+        this.orderProducts = orderProducts;
+    }
 }
