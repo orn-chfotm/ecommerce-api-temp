@@ -22,12 +22,10 @@ public class OrderProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID")
-    @Column(nullable = false)
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID")
-    @Column(nullable = false)
     private Product product;
 
     @Comment(value = "order total price")
