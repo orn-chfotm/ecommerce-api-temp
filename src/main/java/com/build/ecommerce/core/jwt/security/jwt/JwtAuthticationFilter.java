@@ -1,4 +1,4 @@
-package com.build.ecommerce.core.jwt.security.login;
+package com.build.ecommerce.core.jwt.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -13,7 +13,7 @@ public enum ExceptionCode {
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "제품 정보를 찾을 수 없습니다."),
 
     // Authentication
-    AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, "접근 정보가 잘못되었습니다.");
+    AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, "인증 정보를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String defaultMessage;
