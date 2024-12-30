@@ -27,7 +27,7 @@ public record UserRequest(
     public static User toEntity(final UserRequest userRequest, final PasswordEncoder passwordEncoder) {
         return User.builder()
                 .email(userRequest.email)
-                .password(userRequest.password)
+                .password(passwordEncoder.encode(userRequest.password))
                 .name(userRequest.name)
                 .birthDate(LocalDateUtil.toLocalDate(userRequest.birthDate))
             .build();
