@@ -19,6 +19,10 @@ configurations {
     }
 }
 
+ext {
+    JJWT_VERSION = "0.12.3"
+}
+
 repositories {
     mavenCentral()
 }
@@ -36,6 +40,11 @@ dependencies {
     // lomboc
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // JWT
+    implementation "io.jsonwebtoken:jjwt-api:${JJWT_VERSION}"
+    runtimeOnly "io.jsonwebtoken:jjwt-gson:${JJWT_VERSION}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${JJWT_VERSION}"
 
     // spring doc
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
