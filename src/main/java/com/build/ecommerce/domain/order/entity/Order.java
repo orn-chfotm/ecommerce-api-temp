@@ -1,6 +1,5 @@
 package com.build.ecommerce.domain.order.entity;
 
-import com.build.ecommerce.domain.product.entity.Product;
 import com.build.ecommerce.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,16 +28,24 @@ public class Order {
     @GeneratedValue
     private Long orderNumber;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "order", orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Builder
-    public Order(User user, List<OrderProduct> orderProducts) {
+    public Order(Status status, User user) {
+        this.status = status;
         this.user = user;
-        this.orderProducts = orderProducts;
+    }
+
+    public void addOrder(OrderProduct orderProduct) {
+        orderProducts.add(orderProduct);
+        orderProduct.setOder(this);
     }
 }

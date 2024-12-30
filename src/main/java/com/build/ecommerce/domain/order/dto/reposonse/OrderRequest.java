@@ -1,27 +1,18 @@
 package com.build.ecommerce.domain.order.dto.reposonse;
 
-import com.build.ecommerce.domain.order.entity.Order;
-import com.build.ecommerce.domain.order.entity.OrderProduct;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+
+import java.util.List;
 
 public record OrderRequest(
-        @NotNull(message = "제품 번호가 정확하지 않습니다.")
-        @Schema(name = "제품 PK")
-        Long productId,
-        @NotNull(message = "제품 수량을 입력해주세요")
-        @Schema(name = "제품 수량")
-        int quantity
+        @NotNull(message = "주문 목록을 입력해야 합니다.")
+        @Schema(description = "주문 목록")
+        List<OrderDetail> orders,
+        @NotNull(message = "주문자 정보를 입력해야 합니다.")
+        @Schema(description = "주문자 PK")
+        Long userId
 ) {
 
-    public Order toEntity(OrderRequest orderRequest) {
-        Order order = Order.builder().build();
-        order.getOrderProducts().add(
-                OrderProduct.builder()
-                        .quantity(orderRequest.quantity)
-                        .build()
-        );
-
-        return order;
-    }
 }

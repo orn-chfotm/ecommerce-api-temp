@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "ORDER_PRODUCT")
 @Comment(value = "Order Product relation table")
@@ -30,16 +32,24 @@ public class OrderProduct {
     private Product product;
 
     @Comment(value = "order total price")
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
     @Comment(value = "order product quantity")
     private int quantity;
 
     @Builder
-    public OrderProduct(Order order, Product product, int totalPrice, int quantity) {
+    public OrderProduct(Order order, Product product, BigDecimal totalPrice, int quantity) {
         this.order = order;
         this.product = product;
         this.totalPrice = totalPrice;
         this.quantity = quantity;
+    }
+
+    public void setOder(Order order) {
+        this.order = order;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
