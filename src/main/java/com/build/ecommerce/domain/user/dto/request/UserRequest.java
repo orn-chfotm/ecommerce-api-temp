@@ -1,6 +1,7 @@
 package com.build.ecommerce.domain.user.dto.request;
 
 import com.build.ecommerce.core.util.LocalDateUtil;
+import com.build.ecommerce.domain.user.entity.Gender;
 import com.build.ecommerce.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -25,10 +26,13 @@ public record UserRequest(
 ) {
 
     public static User toEntity(final UserRequest userRequest, final PasswordEncoder passwordEncoder) {
+        System.out.println(passwordEncoder.encode(userRequest.password));
+        System.out.println(LocalDateUtil.toLocalDate(userRequest.birthDate));
         return User.builder()
                 .email(userRequest.email)
                 .password(passwordEncoder.encode(userRequest.password))
                 .name(userRequest.name)
+                .gender(Gender.getByValue(userRequest.gender))
                 .birthDate(LocalDateUtil.toLocalDate(userRequest.birthDate))
             .build();
     }
