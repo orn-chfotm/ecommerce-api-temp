@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Getter
 public class JwtProperty {
 
+    @Value("${service.jwt.token-type}")
+    private String tokenType;
     @Value("${service.jwt.key}")
     private String key;
     @Value("${service.jwt.access-expiration}")

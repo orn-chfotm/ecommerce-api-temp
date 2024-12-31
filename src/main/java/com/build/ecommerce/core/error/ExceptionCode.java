@@ -8,6 +8,7 @@ public enum ExceptionCode {
 
     // 사용자
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."),
+    USER_EXIST(HttpStatus.BAD_REQUEST, "이미 존재하는 사용자입니다."),
 
     // 제품
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "제품 정보를 찾을 수 없습니다."),
