@@ -76,7 +76,7 @@ public record ProductResponse(
         return new ProductResponseBuilder();
     }
 
-    public ProductResponse toDto(Product product) {
+    public static ProductResponse toDto(Product product) {
         return ProductResponse.builder()
                 .category(product.getCategory().getValue())
                 .name(product.getName())
