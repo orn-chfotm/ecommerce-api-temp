@@ -6,10 +6,10 @@ import com.build.ecommerce.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record UserResponse(
+        @Schema(description = "User table PK")
+        Long id,
         @Schema(description = "이메일(ID)")
         String email,
-        @Schema(description = "비밀번호")
-        String password,
         @Schema(description = "이름")
         String name,
         @Schema(description = "성별")
@@ -19,19 +19,19 @@ public record UserResponse(
 ) {
 
     public static class UserResponseBuilder {
+        private Long id;
         private String email;
-        private String password;
         private String name;
         private String gender;
         private String birthDate;
 
-        public UserResponseBuilder email(String email) {
-            this.email = email;
+        public UserResponseBuilder id(Long id) {
+            this.id = id;
             return this;
         }
 
-        public UserResponseBuilder password(String password) {
-            this.password = password;
+        public UserResponseBuilder email(String email) {
+            this.email = email;
             return this;
         }
 
@@ -51,11 +51,18 @@ public record UserResponse(
         }
 
         public UserResponse build() {
-            return new UserResponse(this.email, this.password, this.name, this.gender, this.birthDate);
+            return new UserResponse(this.id, this.email, this.name, this.gender, this.birthDate);
         }
 
+        @Override
         public String toString() {
-            return "UserResponse.UserResponseBuilder(email=" + this.email + ", password=" + this.password + ", name=" + this.name + ", gender=" + this.gender + ", birthDate=" + this.birthDate + ")";
+            return "UserResponseBuilder{" +
+                    "id=" + id +
+                    ", email='" + email + '\'' +
+                    ", name='" + name + '\'' +
+                    ", gender='" + gender + '\'' +
+                    ", birthDate='" + birthDate + '\'' +
+                    '}';
         }
     }
 
@@ -65,8 +72,8 @@ public record UserResponse(
 
     public static UserResponse toDto(final User user) {
         return UserResponse.builder()
+                .id(user.getId())
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .name(user.getName())
                 .gender(user.getGender().getValue())
                 .birthDate(LocalDateUtil.toString(user.getBirthDate()))
