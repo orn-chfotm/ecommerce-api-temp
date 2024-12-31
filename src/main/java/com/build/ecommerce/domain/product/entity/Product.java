@@ -56,5 +56,4 @@ public class Product {
         this.minOrderQuantity = minOrderQuantity;
         this.isActive = isActive;
     }
-
 }
