@@ -36,11 +36,15 @@ public class JwtProvider {
 
     public JwtPayload verifyToken(String jwtToken) {
         try {
-            Jwe<Claims> claimsJwe = Jwts.parser().verifyWith(secretKey).build()
-                    .parseEncryptedClaims(jwtToken);
+            Jws<Claims> claimsJws = Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(jwtToken);
+            Claims payload = claimsJws.getPayload();
 
-            Claims payload = claimsJwe.getPayload();
-            return new JwtPayload(payload.get(USER_KEY, String.class), payload.getIssuedAt());
+            String email = payload.get(USER_KEY, String.class);
+            Date issuedAt = payload.getIssuedAt();
+            return new JwtPayload(email, issuedAt);
         } catch (ExpiredJwtException e) {
             throw new AuthenticationFailException("");
         } catch (JwtException e) {
