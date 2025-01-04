@@ -1,6 +1,7 @@
 package com.build.ecommerce.domain.address.dto.response;
 
 import com.build.ecommerce.domain.address.entity.Address;
+import com.build.ecommerce.domain.address.entity.AddressEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record AddressResponse(
@@ -46,7 +47,8 @@ public record AddressResponse(
         return new AddressResponseBuilder();
     }
 
-    public static AddressResponse toDto(Address address) {
+    public static AddressResponse toDto(AddressEntity addressEntity) {
+        Address address = addressEntity.getAddress();
         return AddressResponse.builder()
                 .address(address.getAddress())
                 .extraAddress(address.getExtraAddress())

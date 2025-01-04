@@ -2,6 +2,7 @@ package com.build.ecommerce.domain.user.entity;
 
 import com.build.ecommerce.core.util.BaseEntity;
 import com.build.ecommerce.domain.address.entity.Address;
+import com.build.ecommerce.domain.address.entity.AddressEntity;
 import com.build.ecommerce.domain.order.entity.Order;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,32 +26,33 @@ public class User extends BaseEntity {
     @Column(name = "USER_ID")
     private Long id;
 
-    @Comment(value = "user e-mail address, must be unique and not null")
+    @Comment(value = "이메일 주소(ID), unique and not null")
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Comment("user password, must be unique and not null")
+    @Comment("비밀번호, not null")
     @Column(nullable = false)
     private String password;
 
-    @Comment("user name, must be not null")
+    @Comment("회원 이름, not null")
     @Column(nullable = false)
     private String name;
 
-    @Comment("user gender, must be not null")
+    @Comment("성별, not null")
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
-    @Comment("user birthday, must be not null")
+    @Comment("생년월일, not null")
     @Column(nullable = false)
     private LocalDate birthDate;
 
-    @Comment("user delivery address")
-    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
-    private Address address;
+    @Comment("사용자 배송지 주소")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "USER_ID")
+    private List<AddressEntity> address = new ArrayList<>();
 
-    @Comment("order related relationship")
+    @Comment("주문 내역")
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Order> orders = new ArrayList<>();
 

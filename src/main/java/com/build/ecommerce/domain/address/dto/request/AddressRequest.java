@@ -18,11 +18,5 @@ public record AddressRequest(
         String zipCode
 ) {
 
-    public static Address toEntity(final AddressRequest addressRequest) {
-        return Address.builder()
-                .address(addressRequest.address)
-                .extraAddress(addressRequest.extraAddress)
-                .zipCode(addressRequest.zipCode)
-                .build();
-    }
+
 }

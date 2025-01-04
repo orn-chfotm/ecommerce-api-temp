@@ -5,37 +5,19 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
-@Entity
-@Comment(value = "Delivery Address Table, Join Users Table", on = "TABLE")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Embeddable
 @Getter
 public class Address {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ADDRESS_ID")
-    private Long id;
-
-    @Comment(value = "delivery address")
+    @Comment(value = "도로명 주소 or 지번 주소")
     @Column(nullable = false)
     private String address;
 
-    @Comment(value = "delivery address extra")
+    @Comment(value = "상세 주소")
     @Column(nullable = false)
     private String extraAddress;
 
-    @Comment(value = "delivery address zipCode")
+    @Comment(value = "우편 번호")
     @Column(nullable = false)
     private String zipCode;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
-
-    @Builder
-    public Address(String address, String extraAddress, String zipCode, User user) {
-        this.address = address;
-        this.extraAddress = extraAddress;
-        this.zipCode = zipCode;
-        this.user = user;
-    }
 }
