@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/user")
 @Tag(name = "회원", description = "회원 관련 Api")
 public class UserController {
 
@@ -21,10 +23,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signUp")
+    @GetMapping
+    public ResponseEntity<UserResponse> info(Principal principal) {
+        System.out.println("principal.getName() = " + principal.getName());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(null);
+    }
+
+    @PostMapping
     public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                         .body(userService.register(request));
     }
-
 }
