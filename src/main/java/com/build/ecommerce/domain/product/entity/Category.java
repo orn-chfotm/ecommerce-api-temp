@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public enum Category {
-    FASHION("fashtion"),
+    FASHION("fashion"),
     BEAUTY("beauty"),
     FOOD("food"),
     DIGITAL("digital"),

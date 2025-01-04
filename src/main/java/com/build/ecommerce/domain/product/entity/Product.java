@@ -1,5 +1,7 @@
 package com.build.ecommerce.domain.product.entity;
 
+import com.build.ecommerce.core.util.BaseEntity;
+import com.build.ecommerce.domain.address.entity.Address;
 import com.build.ecommerce.domain.order.entity.Order;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,35 +18,39 @@ import java.math.BigDecimal;
 @Comment(value = "product information table", on = "TABLE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Product {
+public class Product extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID")
     private Long id;
 
-    @Comment("product category, not null")
+    @Comment("제품 카테고리, not null")
     @Column(nullable = false)
     private Category category;
 
-    @Comment("product name, not null")
+    @Comment("제품 명, not null")
     @Column(nullable = false)
     private String name;
 
-    @Comment("product description")
+    @Comment("제품 설명")
     private String description;
 
-    @Comment("product price, not null minimum 0")
+    @Comment("제품 가격, not null")
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Comment("product stockQuantity, null is not specified / 0 is not in stock")
+    @Comment("제품 수량, (null 은 미지정 / 0 은 재고 없음 의미)")
     private Integer stockQuantity;
 
-    @Comment("product minimum order quantity, initial value 0")
+    @Comment("제품 최소 주문 수량, default 0")
     private int minOrderQuantity;
 
-    @Comment("product show Active, not null")
+    @Comment("제품 노출 여부, default false")
     private boolean isActive;
+
+    @Embedded
+    @Comment("주문 시 배송지 정보")
+    private Address address;
 
     @Builder
     public Product(Category category, String name, String description, BigDecimal price, Integer stockQuantity, int minOrderQuantity, boolean isActive) {
