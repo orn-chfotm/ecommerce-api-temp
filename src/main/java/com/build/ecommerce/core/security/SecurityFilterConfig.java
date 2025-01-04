@@ -35,7 +35,8 @@ public class SecurityFilterConfig {
         http
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/v1/signUp").permitAll();
+                        .requestMatchers("/v1/signUp").permitAll()
+                        .anyRequest().authenticated();
             })
             .headers(header -> {
                header.frameOptions().disable();
