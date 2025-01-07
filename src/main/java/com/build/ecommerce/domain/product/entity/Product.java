@@ -26,6 +26,7 @@ public class Product extends BaseEntity {
 
     @Comment("제품 카테고리, not null")
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     @Comment("제품 명, not null")
@@ -46,20 +47,16 @@ public class Product extends BaseEntity {
     private int minOrderQuantity;
 
     @Comment("제품 노출 여부, default false")
-    private boolean isActive;
-
-    @Embedded
-    @Comment("주문 시 배송지 정보")
-    private Address address;
+    private boolean active;
 
     @Builder
-    public Product(Category category, String name, String description, BigDecimal price, Integer stockQuantity, int minOrderQuantity, boolean isActive) {
+    public Product(Category category, String name, String description, BigDecimal price, Integer stockQuantity, int minOrderQuantity, boolean active) {
         this.category = category;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockQuantity = stockQuantity;
         this.minOrderQuantity = minOrderQuantity;
-        this.isActive = isActive;
+        this.active = active;
     }
 }

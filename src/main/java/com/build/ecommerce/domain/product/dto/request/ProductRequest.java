@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.Check;
 
 import java.math.BigDecimal;
@@ -28,8 +29,9 @@ public record ProductRequest(
         @Min(value = 0, message = "최소 주문 수량은 0 이상을 입력해야 합니다.")
         @Schema(description = "최소 주문 수량")
         int minOrderQuantity,
+        @NotNull(message = "노출 여부를 선택해주세요.")
         @Schema(description = "제품 노출 여부")
-        boolean isActive
+        boolean active
 ) {
     public Product toEntity(final ProductRequest productRequest) {
         return Product.builder()
@@ -39,7 +41,7 @@ public record ProductRequest(
                 .price(productRequest.price)
                 .stockQuantity(productRequest.stockQuantity)
                 .minOrderQuantity(productRequest.minOrderQuantity)
-                .isActive(productRequest.isActive)
+                .active(productRequest.active)
             .build();
     }
 }

@@ -40,15 +40,15 @@ public class OrderService {
             .build();
 
         orders
-            .forEach(o -> {
-                Long productId = o.productId();
+            .forEach(order -> {
+                Long productId = order.productId();
                 Product findProduct = productRepository.findById(productId)
                         .orElseThrow(ProductNotFountException::new);
 
                 OrderProduct orderProduct = OrderProduct.builder()
                         .product(findProduct)
-                        .quantity(o.quantity())
-                        .totalPrice(findProduct.getPrice().multiply(BigDecimal.valueOf(o.quantity())))
+                        .quantity(order.quantity())
+                        .totalPrice(findProduct.getPrice().multiply(BigDecimal.valueOf(order.quantity())))
                         .build();
 
                 newOrder.addOrder(orderProduct);

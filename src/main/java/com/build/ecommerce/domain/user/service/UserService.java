@@ -4,12 +4,14 @@ import com.build.ecommerce.domain.user.dto.request.UserRequest;
 import com.build.ecommerce.domain.user.dto.response.UserResponse;
 import com.build.ecommerce.domain.user.entity.User;
 import com.build.ecommerce.domain.user.exception.UserExistException;
+import com.build.ecommerce.domain.user.exception.UserNotFountException;
 import com.build.ecommerce.domain.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -20,7 +22,13 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
+    public UserResponse getDetail(String email) {
+        User findUser = userRepository.findByEmail(email)
+                .orElseThrow(UserNotFountException::new);
+        return UserResponse.toDto(findUser);
+    }
+
     public UserResponse register(UserRequest userRequest) {
         if (userRepository.existsByEmail(userRequest.email())) {
             throw new UserExistException();

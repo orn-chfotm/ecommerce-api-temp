@@ -1,5 +1,6 @@
 package com.build.ecommerce.domain.order.entity;
 
+import com.build.ecommerce.domain.address.entity.Address;
 import com.build.ecommerce.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,6 +38,10 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
+
+    @Embedded
+    @Comment("주문 시 배송지 정보")
+    private Address address;
 
     @Builder
     public Order(Status status, User user) {

@@ -4,6 +4,7 @@ package com.build.ecommerce.domain.user.dto.response;
 import com.build.ecommerce.core.util.LocalDateUtil;
 import com.build.ecommerce.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 public record UserResponse(
         @Schema(description = "User table PK")
@@ -18,56 +19,8 @@ public record UserResponse(
         String birthDate
 ) {
 
-    public static class UserResponseBuilder {
-        private Long id;
-        private String email;
-        private String name;
-        private String gender;
-        private String birthDate;
-
-        public UserResponseBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public UserResponseBuilder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public UserResponseBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public UserResponseBuilder gender(String gender) {
-            this.gender = gender;
-            return this;
-        }
-
-        public UserResponseBuilder birthDate(String birthDate) {
-            this.birthDate = birthDate;
-            return this;
-        }
-
-        public UserResponse build() {
-            return new UserResponse(this.id, this.email, this.name, this.gender, this.birthDate);
-        }
-
-        @Override
-        public String toString() {
-            return "UserResponseBuilder{" +
-                    "id=" + id +
-                    ", email='" + email + '\'' +
-                    ", name='" + name + '\'' +
-                    ", gender='" + gender + '\'' +
-                    ", birthDate='" + birthDate + '\'' +
-                    '}';
-        }
-    }
-
-    public static UserResponseBuilder builder() {
-        return new UserResponseBuilder();
+    @Builder
+    public UserResponse {
     }
 
     public static UserResponse toDto(final User user) {
