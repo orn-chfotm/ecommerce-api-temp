@@ -11,7 +11,7 @@ public class UserExistException extends ApplicationException {
     private final static ExceptionCode EXCEPTION_CODE = USER_EXIST;
 
     public UserExistException() {
-        super(EXCEPTION_CODE.getDefaultMessage(), EXCEPTION_CODE);
+        super(EXCEPTION_CODE.getMessage(), EXCEPTION_CODE);
     }
 
     public UserExistException(String message) {

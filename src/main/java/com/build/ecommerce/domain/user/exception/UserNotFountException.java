@@ -10,7 +10,7 @@ public class UserNotFountException extends ApplicationException {
     private final static ExceptionCode EXCEPTION_CODE = USER_NOT_FOUND;
 
     public UserNotFountException() {
-        super(EXCEPTION_CODE.getDefaultMessage(), EXCEPTION_CODE);
+        super(EXCEPTION_CODE.getMessage(), EXCEPTION_CODE);
     }
 
     public UserNotFountException(String message) {

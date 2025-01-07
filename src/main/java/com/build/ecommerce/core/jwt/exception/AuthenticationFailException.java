@@ -8,7 +8,7 @@ public class AuthenticationFailException extends SecurityException {
     private final static ExceptionCode AUTHENTICATION_FAIL = ExceptionCode.AUTHENTICATION_FAIL;
 
     public AuthenticationFailException() {
-        super(AUTHENTICATION_FAIL.getDefaultMessage(), AUTHENTICATION_FAIL);
+        super(AUTHENTICATION_FAIL.getMessage(), AUTHENTICATION_FAIL);
     }
 
     public AuthenticationFailException(String message) {

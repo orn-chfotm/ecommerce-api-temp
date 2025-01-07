@@ -7,6 +7,7 @@ import com.build.ecommerce.core.jwt.security.jwt.JwtAuthenticationProvider;
 import com.build.ecommerce.core.jwt.security.login.CustomFormLoginFilter;
 import com.build.ecommerce.core.jwt.security.login.CustomFormLoginProvider;
 import com.build.ecommerce.core.jwt.service.JwtService;
+import com.build.ecommerce.domain.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,12 +27,18 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, UserDetailsService userDetailsService, JwtService jwtService, ObjectMapper objectMapper) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
+                          UserDetailsService userDetailsService,
+                          JwtService jwtService,
+                          ObjectMapper objectMapper,
+                          UserRepository userRepository) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.userDetailsService = userDetailsService;
         this.jwtService = jwtService;
         this.objectMapper = objectMapper;
+        this.userRepository = userRepository;
     }
 
 
@@ -47,7 +54,7 @@ public class SecurityConfig {
 
     @Bean
     JwtAuthenticationProvider jwtAuthenticationProvider() {
-        return new JwtAuthenticationProvider(jwtService);
+        return new JwtAuthenticationProvider(jwtService, userRepository);
     }
 
     @Bean

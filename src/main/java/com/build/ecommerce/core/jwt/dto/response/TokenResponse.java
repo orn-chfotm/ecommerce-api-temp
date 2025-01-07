@@ -10,7 +10,7 @@ public record TokenResponse(
         String refreshToken
 ) {
 
-        private static class TokenResponseBuilder {
+    private static class TokenResponseBuilder {
         private String accessToken;
         private String refreshToken;
 

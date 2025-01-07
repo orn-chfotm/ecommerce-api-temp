@@ -4,6 +4,7 @@ import com.build.ecommerce.core.jwt.security.jwt.JwtAuthenticationFilter;
 import com.build.ecommerce.core.jwt.security.login.CustomFormLoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,13 +35,16 @@ public class SecurityFilterConfig {
 
         http
             .authorizeHttpRequests(auth -> {
-                auth.requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/v1/signUp").permitAll()
-                        .anyRequest().authenticated();
+                auth
+                    .requestMatchers(HttpMethod.POST, "/v1/user").permitAll()
+                    .requestMatchers("/h2-console/**", "/swagger-ui/**", "/swagger/**", "/swagger-resources/**", "/v3/**").permitAll()
+                    .anyRequest().authenticated();
             })
             .headers(header -> {
-               header.frameOptions().disable();
+                header.frameOptions().disable();
             });
+        ;
+
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterAfter(customFormLoginFilter, JwtAuthenticationFilter.class);

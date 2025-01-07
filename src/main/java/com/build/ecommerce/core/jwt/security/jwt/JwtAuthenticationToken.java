@@ -2,16 +2,14 @@ package com.build.ecommerce.core.jwt.security.jwt;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collection;
 import java.util.Set;
 
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private final String principal;
-    private String credentials;
+    private final String credentials;
     private final boolean isAuthenticated;
 
     private JwtAuthenticationToken(String principal, String credentials, boolean isAuthenticated) {
@@ -21,18 +19,12 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
         this.isAuthenticated = isAuthenticated;
     }
 
-    public JwtAuthenticationToken(String principal, boolean isAuthenticated) {
-        super(Set.of(new SimpleGrantedAuthority("ROLE_USER")));
-        this.principal = principal;
-        this.isAuthenticated = isAuthenticated;
-    }
-
     public static Authentication toUnAuthenticate(String accessToken) {
         return new JwtAuthenticationToken(null, accessToken, false);
     }
 
     public static Authentication toAuthenticate(String email) {
-        return new JwtAuthenticationToken(email, true);
+        return new JwtAuthenticationToken(email, null, true);
     }
 
     @Override
