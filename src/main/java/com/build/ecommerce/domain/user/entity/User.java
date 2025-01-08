@@ -64,4 +64,8 @@ public class User extends BaseEntity {
         this.gender = gender;
         this.birthDate = birthDate;
     }
+
+    public void addAddr(AddressEntity address) {
+        this.address.add(address);
+    }
 }

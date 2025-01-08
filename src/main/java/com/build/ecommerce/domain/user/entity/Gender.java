@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public enum Gender {
-    MAN("M"), WOMAN("F");
+    MAN("M"), WOMAN("W");
 
     private final String value;
 

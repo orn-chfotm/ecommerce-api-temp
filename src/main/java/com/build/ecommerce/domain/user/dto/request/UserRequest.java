@@ -26,8 +26,6 @@ public record UserRequest(
 ) {
 
     public static User toEntity(final UserRequest userRequest, final PasswordEncoder passwordEncoder) {
-        System.out.println(passwordEncoder.encode(userRequest.password));
-        System.out.println(LocalDateUtil.toLocalDate(userRequest.birthDate));
         return User.builder()
                 .email(userRequest.email)
                 .password(passwordEncoder.encode(userRequest.password))

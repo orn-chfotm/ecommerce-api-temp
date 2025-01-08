@@ -33,7 +33,7 @@ public record ProductRequest(
         @Schema(description = "제품 노출 여부")
         boolean active
 ) {
-    public Product toEntity(final ProductRequest productRequest) {
+    public static Product toEntity(final ProductRequest productRequest) {
         return Product.builder()
                 .category(Category.getByValue(productRequest.category))
                 .name(productRequest.name)

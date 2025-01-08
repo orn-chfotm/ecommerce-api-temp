@@ -24,9 +24,10 @@ public class Order {
     @Id @GeneratedValue
     private Long id;
 
+    @SequenceGenerator(name = "order_seq", sequenceName = "ORDER_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     @Comment(value = "order number, not pk")
-    @Column(name = "ORDER_NUMBER", nullable = false, unique = true)
-    @GeneratedValue
+    @Column(name = "ORDER_NUMBER", unique = true)
     private Long orderNumber;
 
     @Enumerated(EnumType.STRING)
@@ -44,9 +45,10 @@ public class Order {
     private Address address;
 
     @Builder
-    public Order(Status status, User user) {
+    public Order(Status status, User user, Address address) {
         this.status = status;
         this.user = user;
+        this.address = address;
     }
 
     public void addOrder(OrderProduct orderProduct) {

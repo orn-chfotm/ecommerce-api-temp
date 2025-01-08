@@ -21,4 +21,9 @@ public class AddressEntity {
 
     @Embedded
     private Address address;
+
+    @Builder
+    public AddressEntity(Address address) {
+        this.address = address;
+    }
 }

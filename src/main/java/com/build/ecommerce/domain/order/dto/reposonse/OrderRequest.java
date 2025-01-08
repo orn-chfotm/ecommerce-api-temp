@@ -12,7 +12,10 @@ public record OrderRequest(
         List<OrderDetail> orders,
         @NotNull(message = "주문자 정보를 입력해야 합니다.")
         @Schema(description = "주문자 PK")
-        Long userId
+        Long userId,
+        @NotNull(message = "배송지를 선택해야 합니다.")
+        @Schema(description = "배송지")
+        Long addressId
 ) {
 
 }

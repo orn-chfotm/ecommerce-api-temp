@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.Comment;
 
 @Embeddable
+@NoArgsConstructor
 @Getter
 public class Address {
 
@@ -20,4 +21,11 @@ public class Address {
     @Comment(value = "우편 번호")
     @Column(nullable = false)
     private String zipCode;
+
+    @Builder
+    public Address(String address, String extraAddress, String zipCode) {
+        this.address = address;
+        this.extraAddress = extraAddress;
+        this.zipCode = zipCode;
+    }
 }
