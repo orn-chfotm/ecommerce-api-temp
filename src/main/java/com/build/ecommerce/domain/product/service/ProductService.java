@@ -27,6 +27,7 @@ public class ProductService {
         return ProductResponse.toDto(product);
     }
 
+    @Transactional(readOnly = true)
     public List<ProductResponse> findProducts(ProductSerchRequest productSerchRequest) {
         List<Product> findProducts = productRepository.searchProducts(
                 productSerchRequest.getCategory(),

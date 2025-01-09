@@ -5,7 +5,7 @@ import com.build.ecommerce.core.jwt.error.SecurityException;
 
 public class AuthenticationFailException extends SecurityException {
 
-    private final static ExceptionCode AUTHENTICATION_FAIL = ExceptionCode.AUTHENTICATION_FAIL;
+    private static final ExceptionCode AUTHENTICATION_FAIL = ExceptionCode.AUTHENTICATION_NOT_FOUND;
 
     public AuthenticationFailException() {
         super(AUTHENTICATION_FAIL.getMessage(), AUTHENTICATION_FAIL);

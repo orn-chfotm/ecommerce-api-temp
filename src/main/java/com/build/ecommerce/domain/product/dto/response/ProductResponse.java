@@ -1,14 +1,13 @@
 package com.build.ecommerce.domain.product.dto.response;
 
-import com.build.ecommerce.domain.product.entity.Category;
 import com.build.ecommerce.domain.product.entity.Product;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import org.apache.tomcat.util.buf.StringCache;
 
 import java.math.BigDecimal;
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record ProductResponse(
         @Schema(description = "제품 카테고리")
         String category,

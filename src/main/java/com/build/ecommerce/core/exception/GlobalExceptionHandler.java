@@ -26,15 +26,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponse<Void>> handleException(RuntimeException exception) {
-        ExceptionCode exceptionCode = ExceptionCode.EXCEPTION;
-        String message = exception.getMessage().isBlank() ? exceptionCode.getMessage() : exception.getMessage();
-
-        return ResponseEntity.status(exceptionCode.getHttpStatus())
-                .body(ExceptionResponse.of(message));
-    }
-
-    @ExceptionHandler
     public ResponseEntity<ExceptionResponse<Void>> handleException(ApplicationException exception) {
         return ExceptionResponse.toResponse(exception.getExceptionCode());
     }

@@ -10,10 +10,10 @@ public class ProductNotFountException extends ApplicationException {
     private static final ExceptionCode EXCEPTION_CODE = PRODUCT_NOT_FOUND;
 
     public ProductNotFountException() {
-        super(EXCEPTION_CODE.getMessage(), EXCEPTION_CODE);
+        super(EXCEPTION_CODE);
     }
 
     public ProductNotFountException(String message) {
-        super(message, EXCEPTION_CODE);
+        super(EXCEPTION_CODE, message);
     }
 }

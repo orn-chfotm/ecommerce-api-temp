@@ -7,13 +7,13 @@ import static com.build.ecommerce.core.error.ExceptionCode.USER_NOT_FOUND;
 
 public class UserNotFountException extends ApplicationException {
 
-    private final static ExceptionCode EXCEPTION_CODE = USER_NOT_FOUND;
+    private static final ExceptionCode EXCEPTION_CODE = USER_NOT_FOUND;
 
     public UserNotFountException() {
-        super(EXCEPTION_CODE.getMessage(), EXCEPTION_CODE);
+        super(EXCEPTION_CODE);
     }
 
     public UserNotFountException(String message) {
-        super(message, EXCEPTION_CODE);
+        super(EXCEPTION_CODE, message);
     }
 }
