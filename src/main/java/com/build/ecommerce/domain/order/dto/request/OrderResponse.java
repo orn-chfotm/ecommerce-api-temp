@@ -1,24 +1,44 @@
 package com.build.ecommerce.domain.order.dto.request;
 
 import com.build.ecommerce.domain.order.entity.Order;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record OrderResponse(
-        @Schema(name = "주문번호")
-        Long orderNumber
+        @Schema(description = "주문번호")
+        Long orderId,
+        @Schema(description = "주문상태")
+        String status,
+        @Schema(description = "주문 내역 상세")
+        List<OrderedDetail> orderedDetail
 ) {
 
     public static class OrderResponseBuilder {
-        private Long orderNumber;
+        private Long orderId;
+        private String status;
+        private List<OrderedDetail> orderedDetail = new ArrayList<>();
 
-        public OrderResponseBuilder orderNumber(Long orderNumber) {
-            this.orderNumber = orderNumber;
+        public OrderResponseBuilder orderId(Long orderId) {
+            this.orderId = orderId;
+            return this;
+        }
+
+        public OrderResponseBuilder status(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public OrderResponseBuilder orderedDetail(List<OrderedDetail> orderedDetail) {
+            this.orderedDetail = orderedDetail;
             return this;
         }
 
         public OrderResponse build() {
-            return new OrderResponse(orderNumber);
+            return new OrderResponse(orderId, status, orderedDetail);
         }
     }
 
@@ -26,9 +46,18 @@ public record OrderResponse(
         return new OrderResponseBuilder();
     }
 
-    public OrderResponse toDto(Order order) {
+    public static OrderResponse toDto(Order order) {
         return OrderResponse.builder()
-                .orderNumber(order.getOrderNumber())
+                .orderId(order.getId())
+                .status(order.getStatus().name())
             .build();
+    }
+
+    public static OrderResponse toOrderedDetailDto(Order order, List<OrderedDetail> orderedDetails) {
+        return OrderResponse.builder()
+                .orderId(order.getId())
+                .status(order.getStatus().name())
+                .orderedDetail(orderedDetails)
+                .build();
     }
 }

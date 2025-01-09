@@ -1,6 +1,7 @@
 package com.build.ecommerce.domain.order.entity;
 
 import com.build.ecommerce.domain.address.entity.Address;
+import com.build.ecommerce.domain.order.exception.OrderStausException;
 import com.build.ecommerce.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -23,12 +24,6 @@ public class Order {
     @Column(name = "ORDER_ID")
     @Id @GeneratedValue
     private Long id;
-
-    @SequenceGenerator(name = "order_seq", sequenceName = "ORDER_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
-    @Comment(value = "order number, not pk")
-    @Column(name = "ORDER_NUMBER", unique = true)
-    private Long orderNumber;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -54,5 +49,18 @@ public class Order {
     public void addOrder(OrderProduct orderProduct) {
         orderProducts.add(orderProduct);
         orderProduct.setOder(this);
+    }
+
+    public void cancle() {
+        if (isCancleable()) {
+            this.status = Status.CANCLE;
+        } else {
+            throw new OrderStausException();
+        }
+    }
+
+    private boolean isCancleable() {
+        return Status.getCancleable().stream()
+                .anyMatch(s -> s.equals(this.status));
     }
 }

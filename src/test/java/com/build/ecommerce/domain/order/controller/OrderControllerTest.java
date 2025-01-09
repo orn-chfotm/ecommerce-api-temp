@@ -7,25 +7,24 @@ import com.build.ecommerce.domain.order.dto.reposonse.OrderRequest;
 import com.build.ecommerce.domain.product.dto.request.ProductRequest;
 import com.build.ecommerce.domain.product.entity.Product;
 import com.build.ecommerce.domain.product.repository.ProductRepository;
-import com.build.ecommerce.domain.user.dto.request.UserRequest;
 import com.build.ecommerce.domain.user.entity.Gender;
 import com.build.ecommerce.domain.user.entity.User;
+import com.build.ecommerce.domain.user.exception.UserNotFountException;
 import com.build.ecommerce.domain.user.repository.UserRepository;
 import com.build.ecommerce.helper.UnitTestHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -77,7 +76,7 @@ class OrderControllerTest extends UnitTestHelper {
             orders.add(new OrderDetail(product.getId(), i * 10));
         }
 
-        OrderRequest request = new OrderRequest(orders, saveUser.getId(), saveUser.getAddress().get(0).getId());
+        OrderRequest request = new OrderRequest(saveUser.getId(), saveUser.getAddress().get(0).getId(), orders);
 
         mockMvc.perform(post("/v1/order")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,6 +85,29 @@ class OrderControllerTest extends UnitTestHelper {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-    
-    
+
+    @Test
+    @DisplayName("주문 목록 List Test")
+    void getOrderedListTest() throws Exception {
+        // given
+        insertOrderTest();
+
+        // when & then
+        mockMvc.perform(get("/v1/order")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("주문 취소 Test")
+    void cancleOrder() throws Exception{
+        insertOrderTest();
+
+        mockMvc.perform(patch("/v1/order/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
 }
