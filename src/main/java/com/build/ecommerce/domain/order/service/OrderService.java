@@ -78,7 +78,7 @@ public class OrderService {
         return OrderResponse.toDto(saveOrder);
     }
 
-    public OrderResponse orderCancle(Long orderId) {
+    public OrderResponse cancelOrder(Long orderId) {
         Order findOrder = orderRepository.findById(orderId)
                 .orElseThrow(OrderNotFountException::new);
 
@@ -88,7 +88,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderResponse> getOderedList(String email) {
+    public List<OrderResponse> getOrderDetails(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFountException::new);
 
@@ -103,4 +103,5 @@ public class OrderService {
                     return OrderResponse.toOrderedDetailDto(order, orderedDetails);
                 }).toList();
     }
+
 }

@@ -30,7 +30,8 @@ import java.security.Principal;
         responseCode = "200",
         description = "Successful",
         content = @Content(
-                mediaType = "application/json"
+                mediaType = "application/json",
+                schema = @Schema(implementation = UserResponse.class)
         )
 )
 public class UserController {
@@ -46,8 +47,8 @@ public class UserController {
                     )
             }
     )
-    public ResponseEntity<SuccessResponse<UserResponse>> info(@PathVariable String email) {
-        return SuccessResponse.toResponse(userService.getDetail(email));
+    public ResponseEntity<SuccessResponse<UserResponse>> getUserDetail(@PathVariable String email) {
+        return SuccessResponse.toResponse(userService.getUserDetail(email));
     }
 
     @PostMapping
@@ -59,7 +60,7 @@ public class UserController {
                     )
             }
     )
-    public ResponseEntity<SuccessResponse<UserResponse>> signUp(@Valid @RequestBody UserRequest request) {
-        return SuccessResponse.toResponse(userService.register(request));
+    public ResponseEntity<SuccessResponse<UserResponse>> registerUser(@Valid @RequestBody UserRequest request) {
+        return SuccessResponse.toResponse(userService.registerUser(request));
     }
 }

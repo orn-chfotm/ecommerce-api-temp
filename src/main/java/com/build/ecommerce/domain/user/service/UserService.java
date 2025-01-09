@@ -20,13 +20,13 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-    public UserResponse getDetail(String email) {
+    public UserResponse getUserDetail(String email) {
         User findUser = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFountException::new);
         return UserResponse.toDto(findUser);
     }
 
-    public UserResponse register(UserRequest userRequest) {
+    public UserResponse registerUser(UserRequest userRequest) {
         if (userRepository.existsByEmail(userRequest.email())) {
             throw new UserExistException();
         }

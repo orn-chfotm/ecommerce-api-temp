@@ -28,7 +28,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductResponse> findProducts(ProductSerchRequest serchRequest) {
+    public List<ProductResponse> getProductDetail(ProductSerchRequest serchRequest) {
         List<Product> findProducts = productRepository.searchProducts(
                 serchRequest.getCategory(),
                 serchRequest.name(),

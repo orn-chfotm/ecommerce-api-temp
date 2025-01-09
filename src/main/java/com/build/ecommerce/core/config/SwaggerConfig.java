@@ -30,7 +30,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi userApi() {
         return GroupedOpenApi.builder()
-                .group("User API")
+                .group("1. User API")
                 .pathsToMatch("/v1/user/**")
                 .addOpenApiCustomizer(openApi ->
                         openApi.info(new Info()
@@ -43,9 +43,24 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public GroupedOpenApi AdressApi() {
+        return GroupedOpenApi.builder()
+                .group("2. Address API")
+                .pathsToMatch("/v1/address/**")
+                .addOpenApiCustomizer(openApi ->
+                        openApi.info(new Info()
+                                .title("Address API")
+                                .description("API documents related to Address")
+                                .version("1.0")
+                        )
+                )
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi productApi() {
         return GroupedOpenApi.builder()
-                .group("Product API")
+                .group("3. Product API")
                 .pathsToMatch("/v1/product/**")
                 .addOpenApiCustomizer(openApi ->
                     openApi.info(new Info()
@@ -55,5 +70,20 @@ public class SwaggerConfig {
                     )
                 )
             .build();
+    }
+
+    @Bean
+    public GroupedOpenApi orderApi() {
+        return GroupedOpenApi.builder()
+                .group("4. Order API")
+                .pathsToMatch("/v1/order/**")
+                .addOpenApiCustomizer(openApi ->
+                        openApi.info(new Info()
+                                .title("Order API")
+                                .description("API documents related to Order")
+                                .version("1.0")
+                        )
+                )
+                .build();
     }
 }

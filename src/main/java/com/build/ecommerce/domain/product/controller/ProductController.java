@@ -7,6 +7,7 @@ import com.build.ecommerce.domain.product.dto.response.ProductResponse;
 import com.build.ecommerce.domain.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +26,8 @@ import java.util.List;
         responseCode = "200",
         description = "Successful",
         content = @Content(
-                mediaType = "application/json"
+                mediaType = "application/json",
+                schema = @Schema(implementation = ProductResponse.class)
         )
 )
 public class ProductController {
@@ -40,7 +42,7 @@ public class ProductController {
 
     @GetMapping
     @Operation(method = "GET", summary = "Select Prodcut Infomation", description = "제품 정보를 검색합니다.")
-    public ResponseEntity<SuccessResponse<List<ProductResponse>>> getProductList(@Valid @RequestBody ProductSerchRequest serchRequest) {
-        return SuccessResponse.toResponse(productService.findProducts(serchRequest));
+    public ResponseEntity<SuccessResponse<List<ProductResponse>>> getProductDetail(@Valid @RequestBody ProductSerchRequest serchRequest) {
+        return SuccessResponse.toResponse(productService.getProductDetail(serchRequest));
     }
 }

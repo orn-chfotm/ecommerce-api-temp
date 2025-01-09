@@ -22,7 +22,7 @@ public class AddressService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public AddressResponse selectAddressList(String email) {
+    public AddressResponse getAddressList(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFountException::new);
 
@@ -34,7 +34,7 @@ public class AddressService {
         return AddressResponse.toDto(addressEntityResponses);
     }
 
-    public void insertAddress(String name, AddressRequest request) {
+    public void registAddress(String name, AddressRequest request) {
         User user = userRepository.findByEmail(name)
                 .orElseThrow(UserNotFountException::new);
 

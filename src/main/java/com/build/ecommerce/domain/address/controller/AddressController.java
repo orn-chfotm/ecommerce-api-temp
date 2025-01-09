@@ -29,11 +29,15 @@ import java.security.Principal;
                 @ApiResponse(responseCode = "200",
                         description = "Successful",
                         content = @Content(
-                                mediaType = "application/json"
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = AddressResponse.class)
                         )
                 ),
                 @ApiResponse(responseCode = "404", description = "사용자 정보를 찾을 수 없습니다.",
-                        content = @Content(schema = @Schema(implementation = UserNotFountException.class))
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = UserNotFountException.class)
+                        )
                 )
         }
 )
@@ -44,14 +48,14 @@ public class AddressController {
     @GetMapping
     @Operation(method = "GET", summary = "get Address List", description = "사용자의 배송지 등록 정보를 조회합니다.")
     public ResponseEntity<SuccessResponse<AddressResponse>> getAddressList(Principal principal) {
-        return SuccessResponse.toResponse(addressService.selectAddressList(principal.getName()));
+        return SuccessResponse.toResponse(addressService.getAddressList(principal.getName()));
     }
 
     @PostMapping
     @Operation(method = "POST", summary = "regist Address", description = "사용자의 배송지를 등록합니다.")
     ResponseEntity<SuccessResponse<Void>> registAddress(Principal principal,
                                                                    @Valid @RequestBody AddressRequest request) {
-        addressService.insertAddress(principal.getName(), request);
+        addressService.registAddress(principal.getName(), request);
         return SuccessResponse.toResponse(null);
     }
 }
