@@ -76,7 +76,7 @@ class OrderControllerTest extends UnitTestHelper {
             orders.add(new OrderDetail(product.getId(), i * 10));
         }
 
-        OrderRequest request = new OrderRequest(saveUser.getId(), saveUser.getAddress().get(0).getId(), orders);
+        OrderRequest request = new OrderRequest(saveUser.getId(), saveUser.getAddressEntityList().get(0).getId(), orders);
 
         mockMvc.perform(post("/v1/order")
                         .contentType(MediaType.APPLICATION_JSON)

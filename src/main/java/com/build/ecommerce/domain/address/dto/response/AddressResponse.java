@@ -4,42 +4,22 @@ import com.build.ecommerce.domain.address.entity.Address;
 import com.build.ecommerce.domain.address.entity.AddressEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
+
 public record AddressResponse(
-        @Schema(description = "주소지")
-        String address,
-        @Schema(description = "상세 주소지")
-        String extraAddress,
-        @Schema(description = "우편 번호")
-        String zipCode
+        List<AddressEntityResponse> addressList
 ) {
 
-    public static class AddressResponseBuilder {
-        private String address;
-        private String extraAddress;
-        private String zipCode;
+    private static class AddressResponseBuilder {
+        private List<AddressEntityResponse> addressList;
 
-        public AddressResponseBuilder address(String address) {
-            this.address = address;
+        private AddressResponseBuilder addressList(List<AddressEntityResponse> addressList) {
+            this.addressList = addressList;
             return this;
         }
 
-        public AddressResponseBuilder extraAddress(String extraAddress) {
-            this.extraAddress = extraAddress;
-            return this;
-        }
-
-        public AddressResponseBuilder zipCode(String zipCode) {
-            this.zipCode = zipCode;
-            return this;
-        }
-
-        public AddressResponse build() {
-            return new AddressResponse(address, extraAddress, zipCode);
-        }
-
-        @Override
-        public String toString() {
-            return "AddressResponse.AddressResponseBuilder(address= " + this.address + ", extraAddress=" + this.extraAddress + ", zipCode=" + this.zipCode + ")";
+        private AddressResponse build() {
+            return new AddressResponse(addressList);
         }
     }
 
@@ -47,12 +27,9 @@ public record AddressResponse(
         return new AddressResponseBuilder();
     }
 
-    public static AddressResponse toDto(AddressEntity addressEntity) {
-        Address address = addressEntity.getAddress();
+    public static AddressResponse toDto(List<AddressEntityResponse> addressEntityResponse) {
         return AddressResponse.builder()
-                .address(address.getAddress())
-                .extraAddress(address.getExtraAddress())
-                .zipCode(address.getZipCode())
+                .addressList(addressEntityResponse)
                 .build();
     }
 }

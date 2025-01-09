@@ -50,7 +50,7 @@ public class User extends BaseEntity {
     @Comment("사용자 배송지 주소")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "USER_ID")
-    private List<AddressEntity> address = new ArrayList<>();
+    private List<AddressEntity> addressEntityList = new ArrayList<>();
 
     @Comment("주문 내역")
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
@@ -65,7 +65,7 @@ public class User extends BaseEntity {
         this.birthDate = birthDate;
     }
 
-    public void addAddr(AddressEntity address) {
-        this.address.add(address);
+    public void addAddr(AddressEntity addressEntity) {
+        this.addressEntityList.add(addressEntity);
     }
 }

@@ -21,20 +21,20 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductResponse insertProduct(ProductRequest productRequest) {
-        Product product = ProductRequest.toEntity(productRequest);
+    public ProductResponse insertProduct(ProductRequest request) {
+        Product product = ProductRequest.toEntity(request);
         productRepository.save(product);
         return ProductResponse.toDto(product);
     }
 
     @Transactional(readOnly = true)
-    public List<ProductResponse> findProducts(ProductSerchRequest productSerchRequest) {
+    public List<ProductResponse> findProducts(ProductSerchRequest serchRequest) {
         List<Product> findProducts = productRepository.searchProducts(
-                productSerchRequest.getCategory(),
-                productSerchRequest.name(),
-                productSerchRequest.minPrice(),
-                productSerchRequest.maxPrice(),
-                productSerchRequest.stockQuantity()
+                serchRequest.getCategory(),
+                serchRequest.name(),
+                serchRequest.minPrice(),
+                serchRequest.maxPrice(),
+                serchRequest.stockQuantity()
         );
 
         return findProducts.stream()

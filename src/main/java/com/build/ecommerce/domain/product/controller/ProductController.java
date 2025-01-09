@@ -34,13 +34,13 @@ public class ProductController {
 
     @PostMapping
     @Operation(method = "POST", summary = "Insert Prodcut", description = "제품을 등록합니다.")
-    public ResponseEntity<SuccessResponse<ProductResponse>> registerProduct(@Valid @RequestBody ProductRequest productRequest) {
-        return SuccessResponse.toResponse(productService.insertProduct(productRequest));
+    public ResponseEntity<SuccessResponse<ProductResponse>> registerProduct(@Valid @RequestBody ProductRequest request) {
+        return SuccessResponse.toResponse(productService.insertProduct(request));
     }
 
     @GetMapping
     @Operation(method = "GET", summary = "Select Prodcut Infomation", description = "제품 정보를 검색합니다.")
-    public ResponseEntity<SuccessResponse<List<ProductResponse>>> getProductList(@Valid @RequestBody ProductSerchRequest productSerchRequest) {
-        return SuccessResponse.toResponse(productService.findProducts(productSerchRequest));
+    public ResponseEntity<SuccessResponse<List<ProductResponse>>> getProductList(@Valid @RequestBody ProductSerchRequest serchRequest) {
+        return SuccessResponse.toResponse(productService.findProducts(serchRequest));
     }
 }

@@ -17,6 +17,11 @@ public record AddressRequest(
         @Schema(description = "우편 번호")
         String zipCode
 ) {
-
-
+        public static Address toEntity(AddressRequest request) {
+                return Address.builder()
+                        .address(request.address)
+                        .extraAddress(request.extraAddress)
+                        .zipCode(request.zipCode)
+                        .build();
+        }
 }
