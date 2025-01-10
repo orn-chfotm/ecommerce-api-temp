@@ -25,62 +25,18 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi userApi() {
+    public GroupedOpenApi amdinApi() {
         return GroupedOpenApi.builder()
-                .group("1. User API")
-                .pathsToMatch("/v1/user/**")
+                .group("1. Admin API")
+                .pathsToMatch("/v1/admin/**")
                 .addOpenApiCustomizer(openApi ->
                         openApi.info(new Info()
-                                .title("User API")
-                                .description("API documents related to User")
+                                .title("Admin API")
+                                .description("API documents related to Admin")
                                 .version("1.0")
                         )
                 )
             .build();
     }
 
-    @Bean
-    public GroupedOpenApi AdressApi() {
-        return GroupedOpenApi.builder()
-                .group("2. Address API")
-                .pathsToMatch("/v1/address/**")
-                .addOpenApiCustomizer(openApi ->
-                        openApi.info(new Info()
-                                .title("Address API")
-                                .description("API documents related to Address")
-                                .version("1.0")
-                        )
-                )
-                .build();
-    }
-
-    @Bean
-    public GroupedOpenApi productApi() {
-        return GroupedOpenApi.builder()
-                .group("3. Product API")
-                .pathsToMatch("/v1/product/**")
-                .addOpenApiCustomizer(openApi ->
-                    openApi.info(new Info()
-                        .title("Product API")
-                        .description("API documents related to Prodcut")
-                        .version("1.0")
-                    )
-                )
-            .build();
-    }
-
-    @Bean
-    public GroupedOpenApi orderApi() {
-        return GroupedOpenApi.builder()
-                .group("4. Order API")
-                .pathsToMatch("/v1/order/**")
-                .addOpenApiCustomizer(openApi ->
-                        openApi.info(new Info()
-                                .title("Order API")
-                                .description("API documents related to Order")
-                                .version("1.0")
-                        )
-                )
-                .build();
-    }
 }
