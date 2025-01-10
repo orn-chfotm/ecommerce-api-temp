@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaAuditing
 @EntityScan(basePackages = "com.build.domain")
 @EnableJpaRepositories(basePackages = "com.build.domain")
-@SpringBootApplication(scanBasePackages = {"com.build.client", "com.build.core", "com.build.domain"})
+@SpringBootApplication(scanBasePackages = {"com.build"})
 public class ClientApplication {
 
     public static void main(String[] args) {

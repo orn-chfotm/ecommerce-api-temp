@@ -35,7 +35,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @Operation(method = "GET", description = "관리자 정보를 조회합니다.")
+    @Operation(method = "GET", summary = "get admin infomation" , description = "관리자 정보를 조회합니다.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "404", description = "관리자 정보를 찾을 수 없습니다.",
@@ -51,7 +51,7 @@ public class AdminController {
         return SuccessResponse.toResponse(adminService.getAdminDetail(request));
     }
 
-    @Operation(method = "POST", description = "관리자를 등록합니다.")
+    @Operation(method = "POST", summary = "register Admin", description = "관리자를 등록합니다.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "400", description = "이미 존재하는 관리자 Email 입니다.",
