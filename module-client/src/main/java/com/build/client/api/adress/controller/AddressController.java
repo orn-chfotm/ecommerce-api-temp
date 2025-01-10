@@ -50,7 +50,7 @@ public class AddressController {
     }
 
     @PostMapping
-    @Operation(method = "POST", summary = "regist Address", description = "사용자의 배송지를 등록합니다.")
+    @Operation(method = "POST", summary = "register Address", description = "사용자의 배송지를 등록합니다.")
     ResponseEntity<SuccessResponse<Void>> registAddress(Principal principal,
                                                                    @Valid @RequestBody AddressRequest request) {
         addressService.registAddress(principal.getName(), request);
