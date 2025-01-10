@@ -1,1 +1,6 @@
 rootProject.name = 'e-commerce'
+include 'module-domain'
+include 'module-admin'
+include 'module-client'
+include 'module-core'
+
