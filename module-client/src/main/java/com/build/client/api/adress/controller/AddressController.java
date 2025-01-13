@@ -46,7 +46,7 @@ public class AddressController {
     @GetMapping
     @Operation(method = "GET", summary = "get Address List", description = "사용자의 배송지 등록 정보를 조회합니다.")
     public ResponseEntity<SuccessResponse<AddressResponse>> getAddressList(Principal principal) {
-        return SuccessResponse.toResponse(addressService.getAddressList(principal.getName()));
+        return SuccessResponse.toResponse(addressService.getAddressList(Long.parseLong(principal.getName())));
     }
 
     @PostMapping

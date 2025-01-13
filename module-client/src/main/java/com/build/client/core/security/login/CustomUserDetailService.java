@@ -26,6 +26,7 @@ public class CustomUserDetailService implements UserDetailsService {
                 .orElseThrow(UserNotFountException::new);
 
         return new CustomUserDetails(
+                user.getId(),
                 user.getEmail(),
                 user.getPassword(),
                 Set.of(new SimpleGrantedAuthority("ROLE_USER"))

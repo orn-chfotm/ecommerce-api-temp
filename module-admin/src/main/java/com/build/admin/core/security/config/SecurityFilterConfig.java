@@ -1,7 +1,9 @@
 package com.build.admin.core.security.config;
 
+import com.build.admin.core.security.handler.CustomAuthenticationFailureHandler;
 import com.build.admin.core.security.jwt.JwtAuthenticationFilter;
 import com.build.admin.core.security.login.CustomFormLoginFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,15 +14,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityFilterConfig {
 
     private final CustomFormLoginFilter customFormLoginFilter;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    public SecurityFilterConfig(CustomFormLoginFilter customFormLoginFilter, JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.customFormLoginFilter = customFormLoginFilter;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
 
     @Bean
     SecurityFilterChain http(HttpSecurity http) throws Exception {
@@ -35,7 +33,7 @@ public class SecurityFilterConfig {
         http
             .authorizeHttpRequests(auth -> {
                 auth
-                    .requestMatchers(HttpMethod.POST, "/v1/user").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/v1/admin", "/v1/login/admin").permitAll()
                     .requestMatchers("/h2-console/**", "/swagger-ui/**", "/swagger/**", "/swagger-resources/**", "/v3/**").permitAll()
                     .anyRequest().authenticated();
             })
@@ -43,7 +41,6 @@ public class SecurityFilterConfig {
                 header.frameOptions().disable();
             });
         ;
-
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterAfter(customFormLoginFilter, JwtAuthenticationFilter.class);

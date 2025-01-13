@@ -23,14 +23,14 @@ public class CustomFormLoginProvider implements AuthenticationProvider {
         String email = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        CustomUserDetails userDetails = (CustomUserDetails)userDetailsService.loadUserByUsername(email);
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new AuthenticationFailException("비밀번호가 일치하지 않습니다.");
         }
 
         return CustomFormLoginToken.toAuthenticate(
-            userDetails.getUsername(),
+            userDetails.getUserId(),
             userDetails.getAuthorities()
         );
     }

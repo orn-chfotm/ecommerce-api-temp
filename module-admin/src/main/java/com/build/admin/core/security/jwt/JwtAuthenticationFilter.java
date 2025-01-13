@@ -20,6 +20,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtProperty jwtProperty) {
         this.authenticationManager = authenticationManager;
         this.jwtProperty = jwtProperty;
+
     }
 
     @Override

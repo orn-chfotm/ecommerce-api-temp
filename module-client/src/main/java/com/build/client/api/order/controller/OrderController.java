@@ -42,7 +42,8 @@ public class OrderController {
             }
     )
     public ResponseEntity<SuccessResponse<List<OrderResponse>>> getOrderDetails(Principal principal) {
-        return SuccessResponse.toResponse(orderService.getOrderDetails(principal.getName()));
+        Long userId = Long.valueOf(principal.getName());
+        return SuccessResponse.toResponse(orderService.getOrderDetails(userId));
     }
 
     @PostMapping

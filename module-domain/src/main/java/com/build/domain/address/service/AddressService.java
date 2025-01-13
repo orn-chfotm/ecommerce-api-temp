@@ -21,8 +21,8 @@ public class AddressService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public AddressResponse getAddressList(String email) {
-        User user = userRepository.findByEmail(email)
+    public AddressResponse getAddressList(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFountException::new);
 
         List<AddressEntityResponse> addressEntityResponses = user.getAddressEntityList().stream()

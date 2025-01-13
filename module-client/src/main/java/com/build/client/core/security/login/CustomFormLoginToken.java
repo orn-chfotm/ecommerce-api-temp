@@ -19,15 +19,15 @@ public class CustomFormLoginToken extends AbstractAuthenticationToken {
 
     public static CustomFormLoginToken toUnAuthenticate(String username, String password) {
         return new CustomFormLoginToken(
-                new CustomUserDetails(username, password, Collections.emptySet()),
+                new CustomUserDetails(null, username, password, Collections.emptySet()),
                 Collections.emptySet()
         );
     }
 
-    public static CustomFormLoginToken toAuthenticate(String username,
+    public static CustomFormLoginToken toAuthenticate(Long userId,
                                                        Collection<? extends GrantedAuthority> authorities) {
         return new CustomFormLoginToken(
-                new CustomUserDetails(username, null, authorities),
+                new CustomUserDetails(userId, null, null, authorities),
                 authorities
         );
     }
@@ -40,6 +40,10 @@ public class CustomFormLoginToken extends AbstractAuthenticationToken {
     @Override
     public Object getCredentials() {
         return customUserDetails.getPassword();
+    }
+
+    public Long getUserId() {
+        return customUserDetails.getUserId();
     }
 
     @Override

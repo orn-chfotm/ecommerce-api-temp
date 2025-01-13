@@ -24,5 +24,4 @@ public class JwtService {
     public JwtPayload verifyToken(String jwtToken) {
         return jwtProvider.verifyToken(jwtToken);
     }
-
 }

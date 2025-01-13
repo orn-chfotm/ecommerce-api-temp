@@ -18,7 +18,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-
         SecurityAuthenticationException securityException = (SecurityAuthenticationException) exception;
         ExceptionCode exceptionCode = ((SecurityAuthenticationException) exception).getExceptionCode();
         String message = securityException.getMessage();

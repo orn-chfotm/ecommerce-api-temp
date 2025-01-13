@@ -27,18 +27,15 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final ObjectMapper objectMapper;
-    private final UserRepository userRepository;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
                           UserDetailsService userDetailsService,
                           JwtService jwtService,
-                          ObjectMapper objectMapper,
-                          UserRepository userRepository) {
+                          ObjectMapper objectMapper) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.userDetailsService = userDetailsService;
         this.jwtService = jwtService;
         this.objectMapper = objectMapper;
-        this.userRepository = userRepository;
     }
 
 
@@ -54,7 +51,7 @@ public class SecurityConfig {
 
     @Bean
     JwtAuthenticationProvider jwtAuthenticationProvider() {
-        return new JwtAuthenticationProvider(jwtService, userRepository);
+        return new JwtAuthenticationProvider(jwtService);
     }
 
     @Bean

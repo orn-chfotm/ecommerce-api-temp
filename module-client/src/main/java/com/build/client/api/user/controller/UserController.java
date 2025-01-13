@@ -1,5 +1,7 @@
 package com.build.client.api.user.controller;
 
+import com.build.client.core.security.jwt.JwtAuthenticationToken;
+import com.build.client.core.security.login.CustomUserDetails;
 import com.build.core.dto.response.SuccessResponse;
 import com.build.domain.member.user.dto.request.UserRequest;
 import com.build.domain.member.user.dto.response.UserResponse;
@@ -15,7 +17,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/v1/user")
@@ -33,7 +39,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{email}")
+    @GetMapping
     @Operation(method = "GET", summary = "Select User Infomation", description = "사용자 정보를 검색합니다.")
     @ApiResponses(
             value = {
@@ -42,8 +48,9 @@ public class UserController {
                     )
             }
     )
-    public ResponseEntity<SuccessResponse<UserResponse>> getUserDetail(@PathVariable String email) {
-        return SuccessResponse.toResponse(userService.getUserDetail(email));
+    public ResponseEntity<SuccessResponse<UserResponse>> getUserDetail(Principal principal) {
+        long userId = Long.parseLong(principal.getName());
+        return SuccessResponse.toResponse(userService.getUserDetail(userId));
     }
 
     @PostMapping

@@ -88,8 +88,8 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderResponse> getOrderDetails(String email) {
-        User user = userRepository.findByEmail(email)
+    public List<OrderResponse> getOrderDetails(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFountException::new);
 
         return user.getOrders().stream()

@@ -49,7 +49,7 @@ public class CustomFormLoginFilter extends AbstractAuthenticationProcessingFilte
         String password = loginRequest.password();
 
         if (email.isEmpty() || password.isEmpty()) {
-            throw new AuthenticationFailException("ID 또는 PW를 확인해주세요.");
+            throw new AuthenticationFailException("ID 또는 PW를 입력해주세요.");
         }
 
         return getAuthenticationManager().authenticate(
@@ -59,8 +59,13 @@ public class CustomFormLoginFilter extends AbstractAuthenticationProcessingFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String email = (String) authResult.getPrincipal();
-        TokenResponse tokenResponse = jwtService.createToken(new JwtPayload(email, new Date()));
+        CustomFormLoginToken customToken = (CustomFormLoginToken) authResult;
+
+        Long userId = customToken.getUserId();
+
+        TokenResponse tokenResponse = jwtService.createToken(
+                new JwtPayload(userId, new Date())
+        );
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());

@@ -8,11 +8,11 @@ import java.util.Set;
 
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
-    private final String principal;
+    private final Long principal;
     private final String credentials;
     private final boolean isAuthenticated;
 
-    private JwtAuthenticationToken(String principal, String credentials, boolean isAuthenticated) {
+    private JwtAuthenticationToken(Long principal, String credentials, boolean isAuthenticated) {
         super(Set.of(new SimpleGrantedAuthority("ROLE_USER")));
         this.principal = principal;
         this.credentials = credentials;
@@ -23,8 +23,8 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
         return new JwtAuthenticationToken(null, accessToken, false);
     }
 
-    public static Authentication toAuthenticate(String email) {
-        return new JwtAuthenticationToken(email, null, true);
+    public static Authentication toAuthenticate(Long userId) {
+        return new JwtAuthenticationToken(userId, null, true);
     }
 
     @Override
