@@ -4,6 +4,7 @@ import com.build.core.jwt.JwtPayload;
 import com.build.core.jwt.dto.request.LoginRequest;
 import com.build.core.jwt.dto.response.TokenResponse;
 import com.build.core.jwt.exception.AuthenticationFailException;
+import com.build.core.jwt.exception.AuthorityNotFoundException;
 import com.build.core.jwt.service.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -27,8 +30,8 @@ public class CustomFormLoginFilter extends AbstractAuthenticationProcessingFilte
     private final ObjectMapper objectMapper;
 
     public CustomFormLoginFilter(AuthenticationManager authenticationManager,
-                                 JwtService jwtService,
                                  AuthenticationFailureHandler failureHandler,
+                                 JwtService jwtService,
                                  ObjectMapper objectMapper) {
         super("/v1/login/client");
         setAuthenticationManager(authenticationManager);
@@ -60,11 +63,13 @@ public class CustomFormLoginFilter extends AbstractAuthenticationProcessingFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         CustomFormLoginToken customToken = (CustomFormLoginToken) authResult;
-
-        Long userId = customToken.getUserId();
+        String authority = customToken.getAuthorities().stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElseThrow(AuthorityNotFoundException::new);
 
         TokenResponse tokenResponse = jwtService.createToken(
-                new JwtPayload(userId, new Date())
+                new JwtPayload(customToken.getUserId(), authority, new Date())
         );
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -17,7 +17,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         String jwtToken = (String) authentication.getCredentials();
         JwtPayload jwtDto = jwtService.verifyToken(jwtToken);
 
-        return JwtAuthenticationToken.toAuthenticate(jwtDto.userId());
+        return JwtAuthenticationToken.toAuthenticate(jwtDto.id());
     }
 
     @Override

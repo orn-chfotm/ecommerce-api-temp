@@ -26,7 +26,7 @@ public class JwtProvider {
 
     public String createToken(JwtPayload jwtPayload, long expiration) {
         return Jwts.builder()
-                .claim(USERID_KEY, Objects.requireNonNull(String.valueOf(jwtPayload.userId())))
+                .claim(USERID_KEY, Objects.requireNonNull(String.valueOf(jwtPayload.id())))
                 .issuer(issuer)
                 .issuedAt(Objects.requireNonNull(jwtPayload.issuedAt()))
                 .expiration(new Date(jwtPayload.issuedAt().getTime() + expiration))
@@ -43,9 +43,9 @@ public class JwtProvider {
             Claims payload = claimsJws.getPayload();
 
             Date issuedAt = payload.getIssuedAt();
-            String userId = payload.get(USERID_KEY, String.class);
+            String id = payload.get(USERID_KEY, String.class);
 
-            return new JwtPayload(Long.parseLong(userId), issuedAt);
+            return new JwtPayload(Long.parseLong(id), null, issuedAt);
         } catch (ExpiredJwtException e) {
             throw new AuthenticationFailException("인증 토큰 만료이 만료되었습니다.");
         } catch (JwtException e) {

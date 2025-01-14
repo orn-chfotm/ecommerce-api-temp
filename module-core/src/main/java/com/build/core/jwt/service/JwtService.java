@@ -2,6 +2,7 @@ package com.build.core.jwt.service;
 
 import com.build.core.jwt.JwtPayload;
 import com.build.core.jwt.JwtProvider;
+import com.build.core.jwt.dto.request.TokenReqeuset;
 import com.build.core.jwt.dto.response.TokenResponse;
 import com.build.core.jwt.property.JwtProperty;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,30 @@ public class JwtService {
 
     public TokenResponse createToken(JwtPayload jwtPayload) {
         String accessToken = jwtProvider.createToken(jwtPayload, jwtProperty.getAccessExpiration());
-        String refreshToken = jwtProvider.createToken(jwtPayload, jwtProperty.getRefreshExpiration());
+        String refreshToken = null;
+
+        if (jwtPayload.Authority().equals("ROLE_USER")) {
+            refreshToken = jwtProvider.createToken(jwtPayload, jwtProperty.getRefreshExpiration());
+
+        }
 
         return TokenResponse.toResposne(accessToken, refreshToken);
     }
 
     public JwtPayload verifyToken(String jwtToken) {
         return jwtProvider.verifyToken(jwtToken);
+    }
+
+    /**
+     * 사용자 Refresh 토큰을 사용한 Token 재발급
+     * 관리자는 Refresh 토큰을 사용한 Token 재발급 제한 (로그인 토큰 발급 시 AccessToken 만 발급)
+     */
+    public TokenResponse getTokenRefresh(TokenReqeuset reqeuset) {
+        JwtPayload jwtPayload = verifyToken(reqeuset.accessToken());
+
+        return TokenResponse.toResposne(
+                jwtProvider.createToken(jwtPayload, jwtProperty.getAccessExpiration()),
+                jwtProvider.createToken(jwtPayload, jwtProperty.getRefreshExpiration())
+        );
     }
 }

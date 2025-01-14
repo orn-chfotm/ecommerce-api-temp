@@ -29,7 +29,7 @@ public class CustomFormLoginProvider implements AuthenticationProvider {
         }
 
         return CustomFormLoginToken.toAuthenticate(
-            userDetails.getUserId(),
+            userDetails.getAdminId(),
             userDetails.getAuthorities()
         );
     }

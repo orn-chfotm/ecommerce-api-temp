@@ -9,13 +9,13 @@ import java.util.Collection;
 @Getter
 public class CustomUserDetails implements UserDetails {
 
-    private final Long userId;
+    private final Long adminId;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(Long userId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.userId = userId;
+    public CustomUserDetails(Long adminId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.adminId = adminId;
         this.username = username;
         this.password = password;
         this.authorities = authorities;

@@ -1,7 +1,9 @@
 package com.build.core.jwt.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record TokenResponse(
         @Schema(description = "접근 토큰")
         String accessToken,
