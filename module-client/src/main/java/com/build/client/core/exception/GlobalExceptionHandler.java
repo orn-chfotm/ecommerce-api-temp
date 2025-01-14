@@ -17,18 +17,12 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
-    @ExceptionHandler
-    public ResponseEntity<FailResponse<Void>> handleException(Exception exception) {
-        return FailResponse.toResponse(ExceptionCode.EXCEPTION);
-    }
-
-    @ExceptionHandler
+    @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<FailResponse<Void>> handleException(ApplicationException exception) {
         return FailResponse.toResponse(exception.getExceptionCode());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(BindException.class)
     public ResponseEntity<FailResponse<List<ValidationErrorResponse>>> handleBindValidationException(BindException exception) {
         List<ValidationErrorResponse> validErrorList = exception.getFieldErrors().stream()
                 .map(fieldError -> {
@@ -43,8 +37,20 @@ public class GlobalExceptionHandler {
     }
 
     private record ValidationErrorResponse(String field, String message) {
+
         @Builder
         private ValidationErrorResponse {
         }
+
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<FailResponse<Void>> handleException(RuntimeException exception) {
+        return FailResponse.toResponse(ExceptionCode.EXCEPTION);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<FailResponse<Void>> handleException(Exception exception) {
+        return FailResponse.toResponse(ExceptionCode.EXCEPTION);
     }
 }

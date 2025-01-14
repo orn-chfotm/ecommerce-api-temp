@@ -1,14 +1,15 @@
 package com.build.admin.core.security.config;
 
-import com.build.admin.core.security.handler.CustomAuthenticationFailureHandler;
 import com.build.admin.core.security.jwt.JwtAuthenticationFilter;
 import com.build.admin.core.security.jwt.JwtAuthenticationProvider;
 import com.build.admin.core.security.login.CustomFormLoginFilter;
 import com.build.admin.core.security.login.CustomFormLoginProvider;
 import com.build.core.jwt.property.JwtProperty;
 import com.build.core.jwt.service.JwtService;
-import com.build.domain.member.admin.repository.AdminRepository;
+import com.build.core.security.handler.CustomAuthenticationEntryPoint;
+import com.build.core.security.handler.CustomAuthenticationFailureHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,32 +22,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAuthenticationFailureHandler failureHandler;
     private final UserDetailsService userDetailsService;
-    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     private final ObjectMapper objectMapper;
-
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
-                          UserDetailsService userDetailsService,
-                          JwtService jwtService,
-                          ObjectMapper objectMapper) {
-        this.authenticationConfiguration = authenticationConfiguration;
-        this.userDetailsService = userDetailsService;
-        this.jwtService = jwtService;
-        this.objectMapper = objectMapper;
-    }
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+    private final JwtService jwtService;
+    private final JwtProperty jwtProperty;
 
     @Bean
     CustomFormLoginProvider customFormLoginProvider() {
-        return new CustomFormLoginProvider(passwordEncoder(), userDetailsService);
+        return new CustomFormLoginProvider(passwordEncoder, userDetailsService);
     }
 
     @Bean
@@ -63,17 +53,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
+    CustomFormLoginFilter customFormLoginFilter() throws Exception {
+        return new CustomFormLoginFilter(authenticationManager(), failureHandler, jwtService, objectMapper);
     }
 
     @Bean
-    CustomFormLoginFilter customFormLoginFilter(JwtService jwtService) throws Exception {
-        return new CustomFormLoginFilter(authenticationManager(), jwtService, customAuthenticationFailureHandler(), objectMapper);
-    }
-
-    @Bean
-    JwtAuthenticationFilter jwtAuthenticationFilter(JwtProperty jwtProperty) throws Exception {
-        return new JwtAuthenticationFilter(authenticationManager(), jwtProperty);
+    JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        return new JwtAuthenticationFilter(authenticationManager(), authenticationEntryPoint, jwtProperty);
     }
 }
