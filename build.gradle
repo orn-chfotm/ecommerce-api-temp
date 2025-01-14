@@ -57,15 +57,6 @@ subprojects {
         // lomboc
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-
-        // test
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testImplementation 'org.springframework.security:spring-security-test'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    }
-
-    test {
-        useJUnitPlatform()
     }
 }
 
@@ -113,6 +104,15 @@ project(":module-admin") {
     dependencies {
         implementation project(':module-domain')
         implementation project(':module-core')
+
+        // test
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.springframework.security:spring-security-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 
@@ -120,5 +120,14 @@ project(":module-client") {
     dependencies {
         implementation project(':module-domain')
         implementation project(':module-core')
+
+        // test
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.springframework.security:spring-security-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }

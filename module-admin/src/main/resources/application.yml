@@ -28,12 +28,14 @@
 #service.jwt.access-expiration=36000000
 #service.jwt.refresh-expiration=864000000
 
+# Server
+server:
+  port: 8090
 
+# Spring
 spring:
   application:
     name: ecommerce
-  server:
-    port: 8090
 # H2 Database
   datasource:
     url: jdbc:h2:mem:devDb
@@ -66,7 +68,6 @@ logging:
         type:
           descriptor:
             sql: TRACE
-
 
 # jwt
 service:
