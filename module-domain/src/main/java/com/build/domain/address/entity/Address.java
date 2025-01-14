@@ -6,6 +6,7 @@ import org.hibernate.annotations.Comment;
 
 @Embeddable
 @NoArgsConstructor
+@EqualsAndHashCode
 @Getter
 public class Address {
 
