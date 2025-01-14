@@ -42,8 +42,8 @@ public class CustomFormLoginToken extends AbstractAuthenticationToken {
         return customUserDetails.getPassword();
     }
 
-    public Long getUserId() {
-        return customUserDetails.getUserId();
+    public Long getAdminId() {
+        return customUserDetails.getAdminId();
     }
 
     @Override
