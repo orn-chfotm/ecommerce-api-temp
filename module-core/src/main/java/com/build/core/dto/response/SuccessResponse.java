@@ -2,11 +2,13 @@ package com.build.core.dto.response;
 
 import com.build.core.dto.BaseResponse;
 import com.build.core.util.LocaDateTimeUtil;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public record SuccessResponse<T> (
         @Schema(description = "요청시간")
         String timestamp,
