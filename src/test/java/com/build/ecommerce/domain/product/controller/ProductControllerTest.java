@@ -1,22 +1,13 @@
 package com.build.ecommerce.domain.product.controller;
 
-import com.build.ecommerce.core.security.TestSecurityConfig;
 import com.build.ecommerce.domain.product.dto.request.ProductRequest;
 import com.build.ecommerce.domain.product.dto.request.ProductSerchRequest;
 import com.build.ecommerce.domain.product.entity.Product;
 import com.build.ecommerce.domain.product.repository.ProductRepository;
 import com.build.ecommerce.helper.UnitTestHelper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 
@@ -44,8 +35,9 @@ class ProductControllerTest extends UnitTestHelper {
         );
 
         mockMvc.perform(post("/v1/product")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .headers(getHeaderSetting())
+                        .headers(getAccessToken())
+                        .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -77,16 +69,20 @@ class ProductControllerTest extends UnitTestHelper {
 
         // when & then
         mockMvc.perform(post("/v1/product")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .headers(getHeaderSetting())
+                        .headers(getAccessToken())
                         .content(objectMapper.writeValueAsString(userRequestFail)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
 
         mockMvc.perform(post("/v1/product")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .headers(getHeaderSetting())
+                        .headers(getAccessToken())
                         .content(objectMapper.writeValueAsString(frontRequestFail)))
                 .andDo(print())
                 .andExpect(status().is5xxServerError());
+
+
     }
 
     @Test
@@ -119,7 +115,8 @@ class ProductControllerTest extends UnitTestHelper {
 
         // when & then
         mockMvc.perform(get("/v1/product")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .headers(getHeaderSetting())
+                        .headers(getAccessToken())
                         .content(objectMapper.writeValueAsString(serchRequest)))
                 .andDo(print())
                 .andExpect(status().isOk());
