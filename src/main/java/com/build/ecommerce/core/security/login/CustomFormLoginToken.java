@@ -1,11 +1,11 @@
-package com.build.ecommerce.core.jwt.security.login;
 
-import io.jsonwebtoken.lang.Collections;
+package com.build.ecommerce.core.security.login;
+
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 public class CustomFormLoginToken extends AbstractAuthenticationToken {
@@ -20,15 +20,15 @@ public class CustomFormLoginToken extends AbstractAuthenticationToken {
 
     public static CustomFormLoginToken toUnAuthenticate(String username, String password) {
         return new CustomFormLoginToken(
-                new CustomUserDetails(username, password, Collections.emptySet()),
+                new CustomUserDetails(null, username, password, Collections.emptySet()),
                 Collections.emptySet()
         );
     }
 
-    public static CustomFormLoginToken toAuthenticate(String username,
+    public static CustomFormLoginToken toAuthenticate(Long userId,
                                                        Collection<? extends GrantedAuthority> authorities) {
         return new CustomFormLoginToken(
-                new CustomUserDetails(username, null, authorities),
+                new CustomUserDetails(userId, null, null, authorities),
                 authorities
         );
     }
@@ -41,6 +41,10 @@ public class CustomFormLoginToken extends AbstractAuthenticationToken {
     @Override
     public Object getCredentials() {
         return customUserDetails.getPassword();
+    }
+
+    public Long getAdminId() {
+        return customUserDetails.getAdminId();
     }
 
     @Override

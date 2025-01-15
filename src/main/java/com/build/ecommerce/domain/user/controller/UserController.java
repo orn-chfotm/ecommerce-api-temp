@@ -1,10 +1,8 @@
 package com.build.ecommerce.domain.user.controller;
 
 import com.build.ecommerce.core.dto.response.SuccessResponse;
-import com.build.ecommerce.core.jwt.security.jwt.JwtAuthenticationToken;
 import com.build.ecommerce.domain.user.dto.request.UserRequest;
 import com.build.ecommerce.domain.user.dto.response.UserResponse;
-import com.build.ecommerce.domain.user.entity.Gender;
 import com.build.ecommerce.domain.user.exception.UserExistException;
 import com.build.ecommerce.domain.user.exception.UserNotFountException;
 import com.build.ecommerce.domain.user.service.UserService;
@@ -16,11 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/v1/user")
@@ -39,6 +35,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{email}")
+    @Secured("ROLE_USER")
     @Operation(method = "GET", summary = "Select User Infomation", description = "사용자 정보를 검색합니다.")
     @ApiResponses(
             value = {

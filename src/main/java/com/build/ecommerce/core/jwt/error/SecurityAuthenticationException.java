@@ -5,11 +5,11 @@ import lombok.Getter;
 import org.springframework.security.core.AuthenticationException;
 
 @Getter
-public abstract class SecurityException extends AuthenticationException {
+public abstract class SecurityAuthenticationException extends AuthenticationException {
 
     private final ExceptionCode exceptionCode;
 
-    protected SecurityException(String message, ExceptionCode exceptionCode) {
+    protected SecurityAuthenticationException(String message, ExceptionCode exceptionCode) {
         super(message);
         this.exceptionCode = exceptionCode;
     }

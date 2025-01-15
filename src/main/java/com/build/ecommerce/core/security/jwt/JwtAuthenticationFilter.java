@@ -1,10 +1,11 @@
-package com.build.ecommerce.core.jwt.security.jwt;
+package com.build.ecommerce.core.security.jwt;
 
 import com.build.ecommerce.core.jwt.property.JwtProperty;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,15 +13,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtProperty jwtProperty;
-
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtProperty jwtProperty) {
-        this.authenticationManager = authenticationManager;
-        this.jwtProperty = jwtProperty;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

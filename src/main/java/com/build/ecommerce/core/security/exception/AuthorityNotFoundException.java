@@ -1,17 +1,18 @@
-package com.build.ecommerce.core.jwt.exception;
+package com.build.ecommerce.core.security.exception;
+
 
 import com.build.ecommerce.core.error.ExceptionCode;
 import com.build.ecommerce.core.jwt.error.SecurityAuthenticationException;
 
-public class AuthenticationFailException extends SecurityAuthenticationException {
+public class AuthorityNotFoundException extends SecurityAuthenticationException {
 
     private static final ExceptionCode AUTHENTICATION_FAIL = ExceptionCode.AUTHENTICATION_UNAUTHORIZED;
 
-    public AuthenticationFailException() {
+    public AuthorityNotFoundException() {
         super(AUTHENTICATION_FAIL.getMessage(), AUTHENTICATION_FAIL);
     }
 
-    public AuthenticationFailException(String message) {
+    public AuthorityNotFoundException(String message) {
         super(message, AUTHENTICATION_FAIL);
     }
 }

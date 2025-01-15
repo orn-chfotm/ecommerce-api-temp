@@ -1,4 +1,4 @@
-package com.build.ecommerce.core.jwt.security.login;
+package com.build.ecommerce.core.security.login;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,11 +9,13 @@ import java.util.Collection;
 @Getter
 public class CustomUserDetails implements UserDetails {
 
+    private final Long adminId;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(Long adminId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.adminId = adminId;
         this.username = username;
         this.password = password;
         this.authorities = authorities;

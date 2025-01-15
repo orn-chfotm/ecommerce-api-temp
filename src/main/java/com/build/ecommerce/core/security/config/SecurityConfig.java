@@ -1,17 +1,21 @@
-package com.build.ecommerce.core.security;
+package com.build.ecommerce.core.security.config;
 
 import com.build.ecommerce.core.jwt.property.JwtProperty;
-import com.build.ecommerce.core.jwt.security.handler.CustomAuthenticationFailureHandler;
-import com.build.ecommerce.core.jwt.security.jwt.JwtAuthenticationFilter;
-import com.build.ecommerce.core.jwt.security.jwt.JwtAuthenticationProvider;
-import com.build.ecommerce.core.jwt.security.login.CustomFormLoginFilter;
-import com.build.ecommerce.core.jwt.security.login.CustomFormLoginProvider;
 import com.build.ecommerce.core.jwt.service.JwtService;
+import com.build.ecommerce.core.security.handler.CustomAccessDeniedHandler;
+import com.build.ecommerce.core.security.handler.CustomAuthenticationEntryPoint;
+import com.build.ecommerce.core.security.handler.CustomAuthenticationFailureHandler;
+import com.build.ecommerce.core.security.jwt.JwtAuthenticationFilter;
+import com.build.ecommerce.core.security.jwt.JwtAuthenticationProvider;
+import com.build.ecommerce.core.security.login.CustomFormLoginFilter;
+import com.build.ecommerce.core.security.login.CustomFormLoginProvider;
 import com.build.ecommerce.domain.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
@@ -29,21 +34,8 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
-                          UserDetailsService userDetailsService,
-                          JwtService jwtService,
-                          ObjectMapper objectMapper,
-                          UserRepository userRepository) {
-        this.authenticationConfiguration = authenticationConfiguration;
-        this.userDetailsService = userDetailsService;
-        this.jwtService = jwtService;
-        this.objectMapper = objectMapper;
-        this.userRepository = userRepository;
-    }
-
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
@@ -71,12 +63,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    CustomFormLoginFilter customFormLoginFilter(JwtService jwtService) throws Exception {
-        return new CustomFormLoginFilter(authenticationManager(), jwtService, customAuthenticationFailureHandler(), objectMapper);
+    CustomFormLoginFilter customFormLoginFilter() throws Exception {
+        return new CustomFormLoginFilter(authenticationManager(), customAuthenticationFailureHandler(), jwtService, objectMapper);
     }
 
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter(JwtProperty jwtProperty) throws Exception {
         return new JwtAuthenticationFilter(authenticationManager(), jwtProperty);
     }
+
+    @Bean
+    CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
+
+    @Bean
+    CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
 }
