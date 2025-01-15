@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,11 +32,12 @@ import org.springframework.web.bind.annotation.*;
                 schema = @Schema(implementation = AdminResponse.class)
         )
 )
-@Secured("ROLE_ADMIN")
 public class AdminController {
 
     private final AdminService adminService;
 
+    @GetMapping
+    @Secured("ROLE_ADMIN")
     @Operation(method = "GET", summary = "get admin infomation" , description = "관리자 정보를 조회합니다.")
     @ApiResponses(
             value = {
@@ -47,11 +49,12 @@ public class AdminController {
                     )
             }
     )
-    @GetMapping
     public ResponseEntity<SuccessResponse<AdminResponse>> getAdminDetail(@Valid @RequestBody AdminRequest request) {
         return SuccessResponse.toResponse(adminService.getAdminDetail(request));
     }
 
+    @PostMapping
+    @PreAuthorize("permitAll()")
     @Operation(method = "POST", summary = "register Admin", description = "관리자를 등록합니다.")
     @ApiResponses(
             value = {
@@ -63,8 +66,9 @@ public class AdminController {
                     )
             }
     )
-    @PostMapping
     public ResponseEntity<SuccessResponse<AdminResponse>> registerAdmin(@Valid @RequestBody AdminRequest request) {
         return SuccessResponse.toResponse(adminService.registerAdmin(request));
     }
 }
+
+

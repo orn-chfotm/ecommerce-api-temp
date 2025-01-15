@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,12 +31,12 @@ import org.springframework.web.bind.annotation.*;
                 schema = @Schema(implementation = UserResponse.class)
         )
 )
+@PreAuthorize("hasRole('ROLE_USER')")
 public class UserController {
 
     private final UserService userService;
 
     @GetMapping("/{email}")
-    @Secured("ROLE_USER")
     @Operation(method = "GET", summary = "Select User Infomation", description = "사용자 정보를 검색합니다.")
     @ApiResponses(
             value = {
@@ -49,6 +50,7 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("permitAll()")
     @Operation(method = "POST", summary = "Insert User", description = "회원 가입을 진행합니다.")
     @ApiResponses(
             value = {
