@@ -1,38 +1,29 @@
 package com.build.ecommerce.core.security.config;
 
-import com.build.ecommerce.core.jwt.property.JwtProperty;
 import com.build.ecommerce.core.jwt.service.JwtService;
-import com.build.ecommerce.core.security.handler.CustomAccessDeniedHandler;
-import com.build.ecommerce.core.security.handler.CustomAuthenticationEntryPoint;
-import com.build.ecommerce.core.security.handler.CustomAuthenticationFailureHandler;
-import com.build.ecommerce.core.security.jwt.JwtAuthenticationFilter;
 import com.build.ecommerce.core.security.jwt.JwtAuthenticationProvider;
-import com.build.ecommerce.core.security.login.CustomFormLoginFilter;
-import com.build.ecommerce.core.security.login.CustomFormLoginProvider;
-import com.build.ecommerce.domain.user.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.build.ecommerce.core.security.login.admin.CustomAdminDetailService;
+import com.build.ecommerce.core.security.login.admin.CustomAdminLoginProvider;
+import com.build.ecommerce.core.security.login.user.CustomUserDetailService;
+import com.build.ecommerce.core.security.login.user.CustomUserLoginProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+
 @Configuration
-@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final UserDetailsService userDetailsService;
+
+    private final CustomUserDetailService userDetailsService;
+    private final CustomAdminDetailService adminDetailService;
     private final JwtService jwtService;
-    private final ObjectMapper objectMapper;
-    private final UserRepository userRepository;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -40,46 +31,32 @@ public class SecurityConfig {
     }
 
     @Bean
-    CustomFormLoginProvider customFormLoginProvider() {
-        return new CustomFormLoginProvider(passwordEncoder(), userDetailsService);
+    ProviderManager providerManager() {
+        return new ProviderManager(List.of(
+                jwtAuthenticationProvider(),
+                customUserLoginProvider(),
+                customAdminLoginProvider()
+        ));
     }
 
     @Bean
-    JwtAuthenticationProvider jwtAuthenticationProvider() {
-        return new JwtAuthenticationProvider(jwtService, userRepository);
+    AuthenticationProvider jwtAuthenticationProvider() {
+        return new JwtAuthenticationProvider(jwtService);
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        ProviderManager authenticationManager = (ProviderManager) authenticationConfiguration.getAuthenticationManager();
-        authenticationManager.getProviders().add(customFormLoginProvider());
-        authenticationManager.getProviders().add(jwtAuthenticationProvider());
-        return authenticationManager;
+    AuthenticationProvider customUserLoginProvider() {
+        return new CustomUserLoginProvider(
+                passwordEncoder(),
+                userDetailsService
+        );
     }
 
     @Bean
-    CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
+    AuthenticationProvider customAdminLoginProvider() {
+        return new CustomAdminLoginProvider(
+                passwordEncoder(),
+                adminDetailService
+        );
     }
-
-    @Bean
-    CustomFormLoginFilter customFormLoginFilter() throws Exception {
-        return new CustomFormLoginFilter(authenticationManager(), customAuthenticationFailureHandler(), jwtService, objectMapper);
-    }
-
-    @Bean
-    JwtAuthenticationFilter jwtAuthenticationFilter(JwtProperty jwtProperty) throws Exception {
-        return new JwtAuthenticationFilter(authenticationManager(), jwtProperty);
-    }
-
-    @Bean
-    CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
-        return new CustomAuthenticationEntryPoint();
-    }
-
-    @Bean
-    CustomAccessDeniedHandler customAccessDeniedHandler() {
-        return new CustomAccessDeniedHandler();
-    }
-
 }

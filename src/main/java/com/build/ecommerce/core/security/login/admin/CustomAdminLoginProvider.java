@@ -1,6 +1,8 @@
-package com.build.ecommerce.core.security.login;
+package com.build.ecommerce.core.security.login.admin;
 
-import com.build.ecommerce.core.jwt.exception.AuthenticationFailException;
+import com.build.ecommerce.core.security.exception.AuthenticationFailException;
+import com.build.ecommerce.core.security.login.detail.impl.CustomCommonDetails;
+import com.build.ecommerce.core.security.login.token.impl.CustomAdminLoginToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -9,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RequiredArgsConstructor
-public class CustomFormLoginProvider implements AuthenticationProvider {
+public class CustomAdminLoginProvider implements AuthenticationProvider {
 
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
@@ -19,20 +21,20 @@ public class CustomFormLoginProvider implements AuthenticationProvider {
         String email = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
-        CustomUserDetails userDetails = (CustomUserDetails)userDetailsService.loadUserByUsername(email);
+        CustomCommonDetails details = (CustomCommonDetails) userDetailsService.loadUserByUsername(email);
 
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+        if (!passwordEncoder.matches(password, details.getPassword())) {
             throw new AuthenticationFailException("비밀번호가 일치하지 않습니다.");
         }
 
-        return CustomFormLoginToken.toAuthenticate(
-            userDetails.getAdminId(),
-            userDetails.getAuthorities()
+        return CustomAdminLoginToken.toAuthenticate(
+                details.getId(),
+                details.getAuthorities()
         );
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return CustomFormLoginToken.class.isAssignableFrom(authentication);
+        return CustomAdminLoginToken.class.isAssignableFrom(authentication);
     }
 }

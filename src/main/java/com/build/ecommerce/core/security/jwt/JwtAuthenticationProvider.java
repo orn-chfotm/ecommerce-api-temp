@@ -12,7 +12,6 @@ import org.springframework.security.core.AuthenticationException;
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtService jwtService;
-    private final UserRepository userRepository;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

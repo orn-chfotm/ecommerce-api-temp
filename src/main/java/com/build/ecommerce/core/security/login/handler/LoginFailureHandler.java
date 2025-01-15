@@ -1,4 +1,4 @@
-package com.build.ecommerce.core.security.handler;
+package com.build.ecommerce.core.security.login.handler;
 
 import com.build.ecommerce.core.dto.response.FailResponse;
 import com.build.ecommerce.core.error.ExceptionCode;
@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 import java.io.IOException;
 
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class LoginFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {

@@ -2,7 +2,7 @@ package com.build.ecommerce.core.security.exception;
 
 
 import com.build.ecommerce.core.error.ExceptionCode;
-import com.build.ecommerce.core.jwt.error.SecurityAuthenticationException;
+import com.build.ecommerce.core.security.error.SecurityAuthenticationException;
 
 public class AuthenticationFailException extends SecurityAuthenticationException {
 

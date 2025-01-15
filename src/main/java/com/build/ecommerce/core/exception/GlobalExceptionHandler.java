@@ -1,6 +1,7 @@
 package com.build.ecommerce.core.exception;
 
 import com.build.ecommerce.core.dto.response.FailResponse;
+import com.build.ecommerce.core.dto.response.ValidationErrorResponse;
 import com.build.ecommerce.core.error.ApplicationException;
 import com.build.ecommerce.core.error.ExceptionCode;
 import lombok.Builder;
@@ -26,23 +27,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public ResponseEntity<FailResponse<List<ValidationErrorResponse>>> handleBindValidationException(BindException exception) {
         List<ValidationErrorResponse> validErrorList = exception.getFieldErrors().stream()
-                .map(fieldError -> {
-                    return ValidationErrorResponse.builder()
-                            .field(fieldError.getField())
-                            .message(fieldError.getDefaultMessage())
-                            .build();
-                })
+                .map(ValidationErrorResponse::toDto)
                 .collect(Collectors.toList());
 
         return FailResponse.toResponse(ExceptionCode.VALIDATION_EXCEPTION, validErrorList);
-    }
-
-    private record ValidationErrorResponse(String field, String message) {
-
-        @Builder
-        private ValidationErrorResponse {
-        }
-
     }
 
     @ExceptionHandler(RuntimeException.class)

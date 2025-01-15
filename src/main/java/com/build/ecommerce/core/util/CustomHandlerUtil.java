@@ -1,7 +1,7 @@
 package com.build.ecommerce.core.util;
 
 import com.build.ecommerce.core.error.ExceptionCode;
-import com.build.ecommerce.core.jwt.error.SecurityAuthenticationException;
+import com.build.ecommerce.core.security.error.SecurityAuthenticationException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

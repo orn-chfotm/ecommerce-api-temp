@@ -1,6 +1,7 @@
 
-package com.build.ecommerce.core.security.login;
+package com.build.ecommerce.core.security.login.admin;
 
+import com.build.ecommerce.core.security.login.detail.impl.CustomCommonDetails;
 import com.build.ecommerce.domain.admin.entity.Admin;
 import com.build.ecommerce.domain.admin.exception.AdminNotFountException;
 import com.build.ecommerce.domain.admin.repository.AdminRepository;
@@ -15,7 +16,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailService implements UserDetailsService {
+public class CustomAdminDetailService implements UserDetailsService {
 
     private final AdminRepository adminRepository;
 
@@ -24,7 +25,7 @@ public class CustomUserDetailService implements UserDetailsService {
         Admin admin = adminRepository.findByEmail(username)
                 .orElseThrow(AdminNotFountException::new);
 
-        return new CustomUserDetails(
+        return new CustomCommonDetails(
                 admin.getId(),
                 admin.getEmail(),
                 admin.getPassword(),

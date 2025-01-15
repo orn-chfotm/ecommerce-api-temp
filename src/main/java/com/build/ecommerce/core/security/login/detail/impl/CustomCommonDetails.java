@@ -1,21 +1,21 @@
-package com.build.ecommerce.core.security.login;
+package com.build.ecommerce.core.security.login.detail.impl;
 
+import com.build.ecommerce.core.security.login.detail.CustomDetails;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 @Getter
-public class CustomUserDetails implements UserDetails {
+public class CustomCommonDetails implements CustomDetails {
 
-    private final Long adminId;
+    private final Long id;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(Long adminId, String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.adminId = adminId;
+    public CustomCommonDetails(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;

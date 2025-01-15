@@ -1,7 +1,7 @@
 package com.build.ecommerce.core.jwt;
 
-import com.build.ecommerce.core.jwt.exception.AuthenticationFailException;
 import com.build.ecommerce.core.jwt.property.JwtProperty;
+import com.build.ecommerce.core.security.exception.AuthenticationFailException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
