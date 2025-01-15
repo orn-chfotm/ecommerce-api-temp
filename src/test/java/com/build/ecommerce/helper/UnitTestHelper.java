@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Disabled
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UnitTestHelper {
 
     @Autowired
@@ -53,7 +54,7 @@ public class UnitTestHelper {
                 )
                 .andDo(print());
 
-        MvcResult result = mockMvc.perform(post("/v1/login/client")
+        MvcResult result = mockMvc.perform(post("/v1/login/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new LoginDto(email, password)))
                 )

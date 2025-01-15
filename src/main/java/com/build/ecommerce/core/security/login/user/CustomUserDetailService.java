@@ -1,7 +1,7 @@
 
 package com.build.ecommerce.core.security.login.user;
 
-import com.build.ecommerce.core.security.login.detail.impl.CustomCommonDetails;
+import com.build.ecommerce.core.security.login.detail.impl.CustomUserDetails;
 import com.build.ecommerce.domain.admin.exception.AdminNotFountException;
 import com.build.ecommerce.domain.user.entity.User;
 import com.build.ecommerce.domain.user.repository.UserRepository;
@@ -25,7 +25,7 @@ public class CustomUserDetailService implements UserDetailsService {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(AdminNotFountException::new);
 
-        return new CustomCommonDetails(
+        return new CustomUserDetails(
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),

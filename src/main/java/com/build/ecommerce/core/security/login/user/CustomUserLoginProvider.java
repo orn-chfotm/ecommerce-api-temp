@@ -1,7 +1,7 @@
 package com.build.ecommerce.core.security.login.user;
 
 import com.build.ecommerce.core.security.exception.AuthenticationFailException;
-import com.build.ecommerce.core.security.login.detail.impl.CustomCommonDetails;
+import com.build.ecommerce.core.security.login.detail.impl.CustomUserDetails;
 import com.build.ecommerce.core.security.login.token.impl.CustomUserLoginToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,7 +21,7 @@ public class CustomUserLoginProvider implements AuthenticationProvider {
         String email = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
-        CustomCommonDetails details = (CustomCommonDetails)userDetailsService.loadUserByUsername(email);
+        CustomUserDetails details = (CustomUserDetails)userDetailsService.loadUserByUsername(email);
 
         if (!isPasswordMatches(password, details.getPassword())) {
             throw new AuthenticationFailException("비밀번호가 일치하지 않습니다.");

@@ -15,7 +15,7 @@ class UserControllerTest extends UnitTestHelper {
     @DisplayName("회원가입")
     void signUpTest() throws Exception {
         UserRequest userRequest = new UserRequest(
-                "test@email.com",
+                "test2@email.com",
                 "testPassword",
                 "testUser",
                 "M",

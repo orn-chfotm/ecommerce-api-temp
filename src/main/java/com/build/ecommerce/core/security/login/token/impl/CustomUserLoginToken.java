@@ -2,7 +2,7 @@
 package com.build.ecommerce.core.security.login.token.impl;
 
 import com.build.ecommerce.core.security.exception.AuthorityNotFoundException;
-import com.build.ecommerce.core.security.login.detail.impl.CustomCommonDetails;
+import com.build.ecommerce.core.security.login.detail.impl.CustomUserDetails;
 import com.build.ecommerce.core.security.login.token.CustomLoginToken;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,25 +13,23 @@ import java.util.Objects;
 
 public class CustomUserLoginToken extends AbstractAuthenticationToken implements CustomLoginToken {
 
-    private final CustomCommonDetails customUserDetails;
+    private final CustomUserDetails customUserDetails;
 
-    private CustomUserLoginToken(CustomCommonDetails customUserDetails,
-                                 Collection<? extends GrantedAuthority> authorities) {
+    private CustomUserLoginToken(CustomUserDetails customUserDetails, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.customUserDetails = customUserDetails;
     }
 
     public static CustomUserLoginToken toUnAuthenticate(String username, String password) {
         return new CustomUserLoginToken(
-                new CustomCommonDetails(null, username, password, Collections.emptySet()),
+                new CustomUserDetails(null, username, password, Collections.emptySet()),
                 Collections.emptySet()
         );
     }
 
-    public static CustomUserLoginToken toAuthenticate(Long userId,
-                                                      Collection<? extends GrantedAuthority> authorities) {
+    public static CustomUserLoginToken toAuthenticate(Long userId, Collection<? extends GrantedAuthority> authorities) {
         return new CustomUserLoginToken(
-                new CustomCommonDetails(userId, null, null, authorities),
+                new CustomUserDetails(userId, null, null, authorities),
                 authorities
         );
     }

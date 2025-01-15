@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +23,7 @@ public record LoginRequest(
         String password
 ) {
 
-        public static LoginRequest parseDto(HttpServletRequest request, Validator validator) throws IOException {
+        public static LoginRequest parseDto(@NotNull HttpServletRequest request, @NotNull Validator validator) throws IOException {
                 ObjectMapper objectMapper = new ObjectMapper();
                 LoginRequest loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
 

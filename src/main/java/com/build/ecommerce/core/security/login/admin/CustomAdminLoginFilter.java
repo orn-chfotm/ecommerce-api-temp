@@ -4,6 +4,7 @@ import com.build.ecommerce.core.dto.response.ValidationErrorResponse;
 import com.build.ecommerce.core.security.exception.AuthenticationFailException;
 import com.build.ecommerce.core.security.login.dto.request.LoginRequest;
 import com.build.ecommerce.core.security.login.token.impl.CustomAdminLoginToken;
+import com.build.ecommerce.core.security.login.util.FilterUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,19 +24,16 @@ public class CustomAdminLoginFilter extends AbstractAuthenticationProcessingFilt
 
 
     private final static String LOGIN_REQUEST_URL = "/v1/login/admin";
-    private final static String LOGIN_REQUEST_HTTP_METHOD = HttpMethod.POST.name();
-    private final static String LOGIN_REQEUST_CONTENT_TYPE = MediaType.APPLICATION_JSON_VALUE;
-
     private final Validator validator;
 
     public CustomAdminLoginFilter(Validator validator) {
-        super(new AntPathRequestMatcher(LOGIN_REQUEST_URL, LOGIN_REQUEST_HTTP_METHOD));
+        super(FilterUtil.getRequestMatcher(LOGIN_REQUEST_URL));
         this.validator = validator;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!isApplicationJson(request.getContentType())) {
+        if (!FilterUtil.isApplicationJson(request.getContentType())) {
                 throw new AuthenticationFailException("지원하지 않는 Content-Type 입니다.");
         }
 
@@ -47,9 +45,5 @@ public class CustomAdminLoginFilter extends AbstractAuthenticationProcessingFilt
                         loginRequest.password()
                 )
         );
-    }
-
-    private boolean isApplicationJson(String contentType) {
-        return contentType != null && contentType.equals(LOGIN_REQEUST_CONTENT_TYPE);
     }
 }

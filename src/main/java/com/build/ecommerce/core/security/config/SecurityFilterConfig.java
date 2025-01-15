@@ -1,20 +1,27 @@
 package com.build.ecommerce.core.security.config;
 
+import com.build.ecommerce.core.jwt.JwtProvider;
 import com.build.ecommerce.core.jwt.property.JwtProperty;
 import com.build.ecommerce.core.jwt.service.JwtService;
 import com.build.ecommerce.core.security.handler.CustomAccessDeniedHandler;
 import com.build.ecommerce.core.security.handler.CustomAuthenticationEntryPoint;
 import com.build.ecommerce.core.security.jwt.JwtAuthenticationFilter;
+import com.build.ecommerce.core.security.jwt.JwtAuthenticationProvider;
 import com.build.ecommerce.core.security.login.admin.CustomAdminLoginFilter;
+import com.build.ecommerce.core.security.login.admin.CustomAdminLoginProvider;
 import com.build.ecommerce.core.security.login.handler.LoginFailureHandler;
 import com.build.ecommerce.core.security.login.handler.LoginSuccessHandler;
 import com.build.ecommerce.core.security.login.user.CustomUserLoginFilter;
+import com.build.ecommerce.core.security.login.user.CustomUserLoginProvider;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,6 +34,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -34,10 +43,15 @@ public class SecurityFilterConfig {
 
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
-    private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtProperty jwtProperty;
     private final JwtService jwtService;
     private final Validator validator;
+    @Qualifier("userLoginProvider")
+    private final AuthenticationProvider userLoginProvider;
+    @Qualifier("adminLoginProvider")
+    private final AuthenticationProvider adminLoginProvider;
+    @Qualifier("jwtAuthenticationProvider")
+    private final AuthenticationProvider jwtAuthenticationProvider;
 
     @Bean
     SecurityFilterChain http(HttpSecurity http) throws Exception {
@@ -65,7 +79,6 @@ public class SecurityFilterConfig {
                 })
         ;
 
-
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterAfter(adminLoginFilter(), JwtAuthenticationFilter.class);
         http.addFilterAfter(userLoginFilter(), JwtAuthenticationFilter.class);
@@ -74,8 +87,12 @@ public class SecurityFilterConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    AuthenticationManager providerManager() {
+        return new ProviderManager(List.of(
+                jwtAuthenticationProvider,
+                userLoginProvider,
+                adminLoginProvider
+        ));
     }
 
     @Bean
@@ -89,16 +106,18 @@ public class SecurityFilterConfig {
     }
 
     @Bean
-    AbstractAuthenticationProcessingFilter adminLoginFilter() {
+    AbstractAuthenticationProcessingFilter adminLoginFilter() throws Exception {
         AbstractAuthenticationProcessingFilter customAdminLoginFilter = new CustomAdminLoginFilter(validator);
+        customAdminLoginFilter.setAuthenticationManager(providerManager());
         customAdminLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
         customAdminLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
         return customAdminLoginFilter;
     }
 
     @Bean
-    AbstractAuthenticationProcessingFilter userLoginFilter() {
+    AbstractAuthenticationProcessingFilter userLoginFilter() throws Exception {
         AbstractAuthenticationProcessingFilter customUserLoginFilter = new CustomUserLoginFilter(validator);
+        customUserLoginFilter.setAuthenticationManager(providerManager());
         customUserLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
         customUserLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
         return customUserLoginFilter;
@@ -106,8 +125,6 @@ public class SecurityFilterConfig {
 
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        return new JwtAuthenticationFilter(authenticationManager(), jwtProperty);
+        return new JwtAuthenticationFilter(providerManager(), jwtProperty);
     }
-
-
 }

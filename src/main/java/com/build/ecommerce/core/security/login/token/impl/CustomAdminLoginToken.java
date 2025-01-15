@@ -2,7 +2,7 @@
 package com.build.ecommerce.core.security.login.token.impl;
 
 import com.build.ecommerce.core.security.exception.AuthorityNotFoundException;
-import com.build.ecommerce.core.security.login.detail.impl.CustomCommonDetails;
+import com.build.ecommerce.core.security.login.detail.impl.CustomUserDetails;
 import com.build.ecommerce.core.security.login.token.CustomLoginToken;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,42 +13,40 @@ import java.util.Objects;
 
 public class CustomAdminLoginToken extends AbstractAuthenticationToken implements CustomLoginToken {
 
-    private final CustomCommonDetails customAdminDetails;
+    private final CustomUserDetails customUserDetails;
 
-    private CustomAdminLoginToken(CustomCommonDetails customUserDetails,
-                                  Collection<? extends GrantedAuthority> authorities) {
+    private CustomAdminLoginToken(CustomUserDetails customUserDetails, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.customAdminDetails = customUserDetails;
+        this.customUserDetails = customUserDetails;
     }
 
     public static CustomAdminLoginToken toUnAuthenticate(String username, String password) {
         return new CustomAdminLoginToken(
-                new CustomCommonDetails(null, username, password, Collections.emptySet()),
+                new CustomUserDetails(null, username, password, Collections.emptySet()),
                 Collections.emptySet()
         );
     }
 
-    public static CustomAdminLoginToken toAuthenticate(Long userId,
-                                                       Collection<? extends GrantedAuthority> authorities) {
+    public static CustomAdminLoginToken toAuthenticate(Long userId, Collection<? extends GrantedAuthority> authorities) {
         return new CustomAdminLoginToken(
-                new CustomCommonDetails(userId, null, null, authorities),
+                new CustomUserDetails(userId, null, null, authorities),
                 authorities
         );
     }
 
     @Override
     public Object getPrincipal() {
-        return customAdminDetails.getUsername();
+        return customUserDetails.getUsername();
     }
 
     @Override
     public Object getCredentials() {
-        return customAdminDetails.getPassword();
+        return customUserDetails.getPassword();
     }
 
     @Override
     public Long getId() {
-        return customAdminDetails.getId();
+        return customUserDetails.getId();
     }
 
     @Override
@@ -65,11 +63,11 @@ public class CustomAdminLoginToken extends AbstractAuthenticationToken implement
         if (object == null || getClass() != object.getClass()) return false;
         if (!super.equals(object)) return false;
         CustomAdminLoginToken that = (CustomAdminLoginToken) object;
-        return Objects.equals(customAdminDetails, that.customAdminDetails);
+        return Objects.equals(customUserDetails, that.customUserDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), customAdminDetails);
+        return Objects.hash(super.hashCode(), customUserDetails);
     }
 }

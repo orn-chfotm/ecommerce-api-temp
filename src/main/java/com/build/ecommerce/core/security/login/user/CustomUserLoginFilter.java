@@ -8,6 +8,7 @@ import com.build.ecommerce.core.security.exception.AuthorityNotFoundException;
 import com.build.ecommerce.core.security.login.dto.request.LoginRequest;
 import com.build.ecommerce.core.security.login.token.CustomLoginToken;
 import com.build.ecommerce.core.security.login.token.impl.CustomUserLoginToken;
+import com.build.ecommerce.core.security.login.util.FilterUtil;
 import com.build.ecommerce.domain.admin.dto.response.AdminResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -35,19 +36,18 @@ public class CustomUserLoginFilter extends AbstractAuthenticationProcessingFilte
 
     /* Filter Setting */
     private final static String LOGIN_REQUEST_URL = "/v1/login/user";
-    private final static String LOGIN_REQUEST_HTTP_METHOD = HttpMethod.POST.name();
-    private final static String LOGIN_REQEUST_CONTENT_TYPE = MediaType.APPLICATION_JSON_VALUE;
+
 
     private final Validator validator;
 
     public CustomUserLoginFilter(Validator validator) {
-        super(new AntPathRequestMatcher(LOGIN_REQUEST_URL, LOGIN_REQUEST_HTTP_METHOD));
+        super(FilterUtil.getRequestMatcher(LOGIN_REQUEST_URL));
         this.validator = validator;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!isApplicationJson(request.getContentType())) {
+        if (!FilterUtil.isApplicationJson(request.getContentType())) {
             throw new AuthenticationFailException("지원하지 않는 Content-Type 입니다.");
         }
 
@@ -56,13 +56,8 @@ public class CustomUserLoginFilter extends AbstractAuthenticationProcessingFilte
         return getAuthenticationManager().authenticate(
                 CustomUserLoginToken.toUnAuthenticate(
                         loginRequest.email(),
-                        loginRequest.email()
+                        loginRequest.password()
                 )
         );
     }
-
-    private boolean isApplicationJson(String contentType) {
-        return contentType != null && contentType.equals(LOGIN_REQEUST_CONTENT_TYPE);
-    }
-
 }

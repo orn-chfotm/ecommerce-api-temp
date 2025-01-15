@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class LocaDateTimeUtil {
+public class LocalDateTimeUtil {
 
     public final static String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
 

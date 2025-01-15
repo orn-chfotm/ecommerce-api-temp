@@ -1,14 +1,11 @@
 package com.build.ecommerce.core.dto.response;
 
 import com.build.ecommerce.core.dto.BaseResponse;
-import com.build.ecommerce.core.util.LocaDateTimeUtil;
+import com.build.ecommerce.core.util.LocalDateTimeUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
-import java.time.LocalDateTime;
 
 public record SuccessResponse<T> (
         @Schema(description = "요청시간")
@@ -25,7 +22,7 @@ public record SuccessResponse<T> (
         return ResponseEntity.status(statusOk)
             .contentType(MediaType.APPLICATION_JSON)
             .body(new SuccessResponse<>(
-                    LocaDateTimeUtil.nowToString(),
+                    LocalDateTimeUtil.nowToString(),
                     statusOk.value(),
                     statusOk.getReasonPhrase(),
                     data

@@ -2,7 +2,7 @@ package com.build.ecommerce.core.dto.response;
 
 import com.build.ecommerce.core.dto.BaseResponse;
 import com.build.ecommerce.core.error.ExceptionCode;
-import com.build.ecommerce.core.util.LocaDateTimeUtil;
+import com.build.ecommerce.core.util.LocalDateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public record FailResponse<T> (
 
     public static FailResponse<Void> of(final String message) {
         return new FailResponse<>(
-                LocaDateTimeUtil.nowToString(),
+                LocalDateTimeUtil.nowToString(),
                 null,
                 message,
                 null
@@ -34,7 +34,7 @@ public record FailResponse<T> (
         HttpStatus httpStatus = exceptionCode.getHttpStatus();
         return ResponseEntity.status(exceptionCode.getHttpStatus())
                 .body(new FailResponse<>(
-                        LocaDateTimeUtil.nowToString(),
+                        LocalDateTimeUtil.nowToString(),
                         httpStatus.value(),
                         exceptionCode.getMessage(),
                         null
@@ -46,7 +46,7 @@ public record FailResponse<T> (
         HttpStatus httpStatus = exceptionCode.getHttpStatus();
         return ResponseEntity.status(exceptionCode.getHttpStatus())
                 .body(new FailResponse<>(
-                        LocaDateTimeUtil.nowToString(),
+                        LocalDateTimeUtil.nowToString(),
                         httpStatus.value(),
                         exceptionCode.getMessage(),
                         data
