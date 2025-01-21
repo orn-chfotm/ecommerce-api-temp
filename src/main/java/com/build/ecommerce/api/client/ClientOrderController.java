@@ -1,4 +1,4 @@
-package com.build.ecommerce.domain.order.controller;
+package com.build.ecommerce.api.client;
 
 import com.build.ecommerce.core.dto.response.SuccessResponse;
 import com.build.ecommerce.domain.order.dto.reposonse.OrderRequest;
@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/order")
+@RequestMapping("/v1/client/order")
 @RequiredArgsConstructor
 @Tag(name = "주문", description = "주문 관련 Api")
 @ApiResponse(
@@ -33,7 +32,7 @@ import java.util.List;
         )
 )
 @Secured("ROLE_USER")
-public class OrderController {
+public class ClientOrderController {
 
     private final OrderService orderService;
 

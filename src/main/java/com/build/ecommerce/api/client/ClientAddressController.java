@@ -1,4 +1,4 @@
-package com.build.ecommerce.domain.address.controller;
+package com.build.ecommerce.api.client;
 
 import com.build.ecommerce.core.dto.response.SuccessResponse;
 import com.build.ecommerce.domain.address.dto.request.AddressRequest;
@@ -15,15 +15,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 @RestController
 @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-@RequestMapping("/v1/address")
+@RequestMapping("/v1/client/address")
 @RequiredArgsConstructor
 @Tag(name = "배송지", description = "배송지 관련 Api")
 @ApiResponses(
@@ -43,7 +41,7 @@ import java.security.Principal;
                 )
         }
 )
-public class AddressController {
+public class ClientAddressController {
 
     private final AddressService addressService;
 
@@ -54,8 +52,8 @@ public class AddressController {
     }
 
     @PostMapping
-    @Operation(method = "POST", summary = "regist Address", description = "사용자의 배송지를 등록합니다.")
-    ResponseEntity<SuccessResponse<Void>> registAddress(Principal principal,
+    @Operation(method = "POST", summary = "request Address", description = "사용자의 배송지를 등록합니다.")
+    ResponseEntity<SuccessResponse<Void>> registerAddress(Principal principal,
                                                                    @Valid @RequestBody AddressRequest request) {
         addressService.registAddress(principal.getName(), request);
         return SuccessResponse.toResponse(null);
